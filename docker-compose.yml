@@ -4,7 +4,6 @@ services:
     image: mysql:8.0
     container_name: nosmoke-db
     environment:
-      # .env 파일에서 값을 가져옴
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -21,10 +20,9 @@ services:
     depends_on:
       - db
     environment:
-      # .env 파일의 값을 컨테이너 내부 환경변수로 주입
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}  # <-- DB와 똑같은 비밀번호 사용됨 (자동 해결!)
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8080:8080"

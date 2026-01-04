@@ -1,4 +1,4 @@
-Started by user [8mha:////4HFivP+2V05MNbPxo719YwKviywS+TBw0qvoPbZSFujvAAAAmx+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAyuEgZ+/dLi1CL93My85ORkEyNzAFzyrwnEAAAA[0mMseunghwan
+Started by GitHub push by Mseunghwan
 [8mha:////4KDlbYmi4zI/JJicxuyaUsGDlSLsS3exEOi7aX1Scc37AAAAoh+LCAAAAAAAAP9tjTEOwjAQBM8BClpKHuFItIiK1krDC0x8GCfWnbEdkooX8TX+gCESFVvtrLSa5wtWKcKBo5UdUu8otU4GP9jS5Mixv3geZcdn2TIl9igbHBs2eJyx4YwwR1SwULBGaj0nRzbDRnX6rmuvydanHMu2V1A5c4MHCFXMWcf8hSnC9jqYxPTz/BXAFEIGsfuclm8zQVqFvQAAAA==[0m[Pipeline] Start of Pipeline
 [8mha:////4Ajv+OhINeySXY55f8/eHL2JU0YnVwePDNJ0JBnquCs7AAAApR+LCAAAAAAAAP9tjTEOwjAUQ3+KOrAycohUghExsUZZOEFIQkgb/d8mKe3EibgadyBQiQlLlmxL1nu+oE4RjhQdby12HpP2vA+jK4lPFLtroIm3dOGaMFGwXNpJkrGnpUrKFhaxClYC1hZ1oOTRZdiIVt1VExS65pxj2Q4CKm8GeAAThZxVzN8yR9jeRpMIf5y/AJj7DGxXvP/86jduZBmjwAAAAA==[0m[Pipeline] node
 Running on [8mha:////4EhAq0+ZZuh6lHbXFM+2KIZPlsXstfgiMoZ5Rv+cOd35AAAAoR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAz2EgZR/eT83ILSktQifY2k0sycEt3MPE19AHHxbH3KAAAA[0mJenkins in /var/jenkins_home/workspace/NoSmoke-Pipeline
@@ -8,24 +8,22 @@ Running on [8mha:////4EhAq0+ZZuh6lHbXFM+2KIZPlsXstfgiMoZ5Rv+cOd35AAAAoR+LCAAAAA
 [8mha:////4Aq+NlrSzPvBD+rqMNtwY3Z1H1DapTBM+noVOsRknv6HAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQTbaWGsbAmNJ0AWEZb8zwLrbuWJvJp3kLiJlZNMMm+a93rDOic4UbLcG+wdZu14DKOti0+U+lugiXu6ck2YKRguzSSpM+cFJRUDS1gDKwEbgzpQdmgLbIVXD9UGhba9lFS/o4DGdQM8gYlqLiqVL8wJdvexy4Q/z18BzLEA29ce4gfg7KmOvAAAAA==[0m[Pipeline] git
 The recommended git tool is: NONE
 No credentials specified
-Cloning the remote Git repository
-Cloning repository https://github.com/Mseunghwan/NoSmoke.git
- > git init /var/jenkins_home/workspace/NoSmoke-Pipeline # timeout=10
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/NoSmoke-Pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Mseunghwan/NoSmoke.git # timeout=10
 Fetching upstream changes from https://github.com/Mseunghwan/NoSmoke.git
  > git --version # timeout=10
  > git --version # 'git version 2.47.3'
  > git fetch --tags --force --progress -- https://github.com/Mseunghwan/NoSmoke.git +refs/heads/*:refs/remotes/origin/* # timeout=10
- > git config remote.origin.url https://github.com/Mseunghwan/NoSmoke.git # timeout=10
- > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
-Avoid second fetch
  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-Checking out Revision f55926014b3c49d1fdfdaa40e02e5095ad1ff614 (refs/remotes/origin/main)
+Checking out Revision cab1a127dd6184311e07b984ae2e27af7fc5d2d1 (refs/remotes/origin/main)
  > git config core.sparsecheckout # timeout=10
- > git checkout -f f55926014b3c49d1fdfdaa40e02e5095ad1ff614 # timeout=10
+ > git checkout -f cab1a127dd6184311e07b984ae2e27af7fc5d2d1 # timeout=10
  > git branch -a -v --no-abbrev # timeout=10
- > git checkout -b main f55926014b3c49d1fdfdaa40e02e5095ad1ff614 # timeout=10
-Commit message: "Test: 젠킨스 작동 확인 - github webhook 연결"
-First time build. Skipping changelog.
+ > git branch -D main # timeout=10
+ > git checkout -b main cab1a127dd6184311e07b984ae2e27af7fc5d2d1 # timeout=10
+Commit message: "Test: Jenkins 테스트 성공"
+ > git rev-list --no-walk f55926014b3c49d1fdfdaa40e02e5095ad1ff614 # timeout=10
 [8mha:////4MmJdxwH7O4pGxhgNmEI/X8SQwoPnjsQ+ljmwzDRpUwEAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQTbGRNjZUtoPAGyiLDkfxZYdytP5NW8g8RNrJxkknnTvNcb1jnBiZLl3mDvMGvHYxhtXXyi1N8CTdzTlWvCTMFwaSZJnTkvKKkYWMIaWAnYGNSBskNbYCu8eqg2KLTtpaT6HQU0rhvgCUxUc1GpfGFOsLuPXSb8ef4KYI6xADvU7j9Dg2gqvAAAAA==[0m[Pipeline] }
 [8mha:////4M8X1BMaMEryRiTixyS4iWNUqiUuYsdIqLJd7QxM/JooAAAAoh+LCAAAAAAAAP9tjTEOAiEURD9rLGwtPQRbWRhjZUtoPAGyiLDkfxZYdytP5NW8g8RNrJxkknnTvNcb1jnBiZLl3mDvMGvHYxhtXXyi1N8CTdzTlWvCTMFwaSZJnTkvKKkYWMIaWAnYGNSBskNbYCu8eqg2KLTtpaT6HQU0rhvgCUxUc1GpfGFOsLuPXSb8ef4KYI6xADvU7j9J+wGOvAAAAA==[0m[Pipeline] // stage
 [8mha:////4HwODYl6ZmIXxkPF5z0de5Qw1t0x6qKpfCYESKDUxPUUAAAAph+LCAAAAAAAAP9tjTEOwjAQBM9BKWgpeYQDEh2iorXc8AITG+PEugv2haTiRXyNPxCIRMVWOyut5vmCMic4UPKycdgGzHWQXez91ORAqb1EGmRDZ1kTZopOajdosu44oyZ2MEcUsFCwdFhHygE9w0o15m6qaNBXJ07TtldQBHuDBwg1mdkk/sKYYH3tbSb8ef4KYOwYxI6h2G4+x/INtuQqUcEAAAA=[0m[Pipeline] stage
@@ -37,33 +35,17 @@ Running in /var/jenkins_home/workspace/NoSmoke-Pipeline/backend
 + chmod +x gradlew
 [8mha:////4E4NSDpOoPm+7NPuzjmihIk4Q9sDpBOxm8Ar0YKSjG+LAAAApB+LCAAAAAAAAP9tjTEOwjAQBC9BFLSUPOIihKgQVVrLDS8wsTFOrDtjOyQVL+Jr/IFAJCq2WO1sM88XLFOEI0eLraHOUWocBt/baeHAsbt4HrDlMzZMib1BaQbJ2tQzSs4G5hQlLASsDDWekyObYS1adVeVV2SrU47TdxBQOn2DBxRiMmcV8xfGCJtrrxPTz/NXAGPIUG53n9qHN0uFte2+AAAA[0m[Pipeline] sh
 + ./gradlew test
-Downloading https://services.gradle.org/distributions/gradle-8.14.2-bin.zip
-.............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%..............100%
-
-Welcome to Gradle 8.14.2!
-
-Here are the highlights of this release:
- - Java 24 support
- - GraalVM Native Image toolchain selection
- - Enhancements to test reporting
- - Build Authoring improvements
-
-For more details see https://docs.gradle.org/8.14.2/release-notes.html
-
 Starting a Gradle Daemon (subsequent builds will be faster)
-> Task :compileJava
-> Task :processResources
-> Task :classes
-> Task :compileTestJava
-> Task :processTestResources
-> Task :testClasses
-2026-01-05T04:02:16.159+09:00  INFO 981 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-01-05T04:02:16.160+09:00  INFO 981 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-01-05T04:02:16.161+09:00  INFO 981 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-> Task :test
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+> Task :test UP-TO-DATE
 
-BUILD SUCCESSFUL in 1m 35s
-5 actionable tasks: 5 executed
+BUILD SUCCESSFUL in 3s
+5 actionable tasks: 5 up-to-date
 [8mha:////4PbodhEDjtg7RXfQ4BFQEZQZpxpyJ4VThOXfLSVz8ppnAAAApR+LCAAAAAAAAP9tjTEOwjAQBC9BFLSUPOIihESDqNJabniBiY1xYt0Z2yGpeBFf4w8EIlGxxWpnm3m+YJkiHDlabA11jlLjMPjeTgsHjt3F84Atn7FhSuwNSjNI1qaeUXI2MKcoYSFgZajxnBzZDGvRqruqvCJbnXKcvoOA0ukbPKAQkzmrmL8wRthce52Yfp6/AhhDyFBu95/avQEeFbpZvgAAAA==[0m[Pipeline] }
 [8mha:////4NOFBITMlCayASFHz7jGeMmQw693qo9c2eBLebyL1l2kAAAApB+LCAAAAAAAAP9tjTEOwjAQBC9BFLSUPOIiaCgQVVrLDS8wsTFOrDtjOyQVL+Jr/IFAJCq2WO1sM88XLFOEI0eLraHOUWocBt/baeHAsbt4HrDlMzZMib1BaQbJ2tQzSs4G5hQlLASsDDWekyObYS1adVeVV2SrU47TdxBQOn2DBxRiMmcV8xfGCJtrrxPTz/NXAGMIGcrt/lO7Ny324eW+AAAA[0m[Pipeline] // dir
 [8mha:////4DuUl1Cgv9H8ONe7xb+oLDwpCJA9fupAaOdhN3RHNAtGAAAApB+LCAAAAAAAAP9tjbEOwiAURV9rHFwd/QiabibGyZWw+AXYIkLJexSodPKL/DX/QbSJk3e4uecu5/mCdQxwpKCZVTgYjJ1h3k26LJYpDFdHmVm6sI4wklNMqCyoV6cFBSUFS6oaVhw2CjtH0aBOsOVW3mXjJOrmnEL5Dhxq04/wgIoXc5IhfWEOsLtNfST8ef4KYPY+Qd3uP9W+AUIVvo2+AAAA[0m[Pipeline] }
@@ -80,15 +62,15 @@ Building JAR...
 > Task :compileJava UP-TO-DATE
 > Task :processResources UP-TO-DATE
 > Task :classes UP-TO-DATE
-> Task :resolveMainClassName
-> Task :bootJar
-> Task :jar
-> Task :assemble
+> Task :resolveMainClassName UP-TO-DATE
+> Task :bootJar UP-TO-DATE
+> Task :jar UP-TO-DATE
+> Task :assemble UP-TO-DATE
 > Task :check
 > Task :build
 
-BUILD SUCCESSFUL in 2s
-5 actionable tasks: 3 executed, 2 up-to-date
+BUILD SUCCESSFUL in 1s
+5 actionable tasks: 5 up-to-date
 [8mha:////4DSVOghZMpEZBHCdrq/CQEx+CdqaXBxIxfzF4AdA9cviAAAApR+LCAAAAAAAAP9tjTEOwjAQBC9BFLSUPOIigUSDqNJabniBiY1xYt0Z2yGpeBFf4w8EIlGxxWpnm3m+YJkiHDlabA11jlLjMPjeTgsHjt3F84Atn7FhSuwNSjNI1qaeUXI2MKcoYSFgZajxnBzZDGvRqruqvCJbnXKcvoOA0ukbPKAQkzmrmL8wRthce52Yfp6/AhhDyFBu95/avQFAXH9DvgAAAA==[0m[Pipeline] }
 [8mha:////4K9w6jbvDQGiL5eR0GPmiYC6EYNcNaOtrOktyokbtLhgAAAApB+LCAAAAAAAAP9tjTESwiAURH/iWNhaeggyk8bCsbJlaDwBJogQ5n8CRFJ5Iq/mHUQzY+UWO/u2ec8XrGOAIwXNrMLBYOwM827SZbFMYbg6yszShXWEkZxiQmVBvTotKCgpWFLVsOKwUdg5igZ1gi238i4bJ1E35xTKd+BQm36EB1S8mJMM6QtzgN1t6iPhz/NXALP3Cep2/6n2DXO/JP++AAAA[0m[Pipeline] // dir
 [8mha:////4IHy8b3uF28uHMyRTtJN8XNN9tDdqg8tuJ1gh+AcWwzXAAAApB+LCAAAAAAAAP9tjTEOwjAQBC9BFLSUPOIiqJAQVVrLDS8wsTFOrDtjOyQVL+Jr/IFAJCq2WO1sM88XLFOEI0eLraHOUWocBt/baeHAsbt4HrDlMzZMib1BaQbJ2tQzSs4G5hQlLASsDDWekyObYS1adVeVV2SrU47TdxBQOn2DBxRiMmcV8xfGCJtrrxPTz/NXAGMIGcrd/lPbNxxce5e+AAAA[0m[Pipeline] }
