@@ -15,7 +15,6 @@
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@4238.va_6fb_65c1f699">
     <script>pipeline {
     agent any
-
     stages {
         stage(&apos;Checkout&apos;) {
             steps {
@@ -24,18 +23,14 @@
                 // 나중에는 여기에 git url: &apos;https://github.com/...&apos; 이 들어갑니다.
             }
         }
-        
         stage(&apos;Test Backend (Spring)&apos;) {
             steps {
-                dir(&apos;backend&apos;) {  // backend 폴더로 이동
-                    echo &apos;Testing Spring Boot...&apos;
-                    // 윈도우면 gradlew.bat, 맥/리눅스는 ./gradlew
-                    sh &apos;chmod +x gradlew&apos; 
-                    sh &apos;./gradlew test&apos; 
+                dir(&apos;backend&apos;) {
+                    sh &apos;chmod +x gradlew&apos;
+                    sh &apos;./gradlew test&apos;  // 이제 그냥 이렇게만 해도 됨!
                 }
             }
         }
-
         stage(&apos;Build Backend&apos;) {
             steps {
                 dir(&apos;backend&apos;) {

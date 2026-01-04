@@ -4,10 +4,10 @@ services:
     image: mysql:8.0
     container_name: nosmoke-db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword  # 원하는 비밀번호로 변경
-      MYSQL_DATABASE: nosmoke
+      MYSQL_ROOT_PASSWORD: 95440949  # 원하는 비밀번호로 변경
+      MYSQL_DATABASE: noSmoke
       MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_PASSWORD: 95440949
     ports:
       - "3307:3306"
     volumes:
@@ -50,7 +50,7 @@ services:
 
   # 5. Jenkins
   jenkins:
-    image: jenkins/jenkins:lts-jdk17  # 안정적인 LTS 버전 + Java 17
+    image: jenkins/jenkins:lts-jdk21  # 안정적인 LTS 버전 + Java 17
     container_name: nosmoke-jenkins
     user: root  # Docker 소켓 접근 권한을 위해 root로 실행 (개발용 설정)
     ports:
