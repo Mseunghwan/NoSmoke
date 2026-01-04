@@ -1,0 +1,63 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1559.va_a_533730b_ea_d">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2277.v00573e73ddf1"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2277.v00573e73ddf1">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>금연 관리 플랫폼 NoSmoke 의 파이프라인</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@4238.va_6fb_65c1f699">
+    <script>pipeline {
+    agent any
+
+    stages {
+        stage(&apos;Checkout&apos;) {
+            steps {
+                // 1. 깃허브에서 코드 가져오기 (실제론 Git 설정이 필요하지만, 지금은 로컬 테스트용)
+                git branch: &apos;main&apos;, url: &apos;https://github.com/Mseunghwan/NoSmoke.git&apos;
+                // 나중에는 여기에 git url: &apos;https://github.com/...&apos; 이 들어갑니다.
+            }
+        }
+        
+        stage(&apos;Test Backend (Spring)&apos;) {
+            steps {
+                dir(&apos;backend&apos;) {  // backend 폴더로 이동
+                    echo &apos;Testing Spring Boot...&apos;
+                    // 윈도우면 gradlew.bat, 맥/리눅스는 ./gradlew
+                    sh &apos;chmod +x gradlew&apos; 
+                    sh &apos;./gradlew test&apos; 
+                }
+            }
+        }
+
+        stage(&apos;Build Backend&apos;) {
+            steps {
+                dir(&apos;backend&apos;) {
+                    echo &apos;Building JAR...&apos;
+                    sh &apos;./gradlew build -x test&apos; // 테스트는 위에서 했으니 생략
+                }
+            }
+        }
+        
+        stage(&apos;Test AI Server&apos;) {
+            steps {
+                dir(&apos;ai-server&apos;) {
+                    echo &apos;Testing FastAPI...&apos;
+                    // 파이썬 테스트 코드가 있다면 여기서 실행
+                    // sh &apos;python -m pytest&apos; 
+                }
+            }
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

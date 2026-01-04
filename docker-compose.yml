@@ -48,5 +48,19 @@ services:
       - backend
       - ai-server
 
+  # 5. Jenkins
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17  # 안정적인 LTS 버전 + Java 17
+    container_name: nosmoke-jenkins
+    user: root  # Docker 소켓 접근 권한을 위해 root로 실행 (개발용 설정)
+    ports:
+      - "9090:8080"  # 호스트의 9090포트로 접속 (8080은 이미 백엔드가 쓰니까 피함)
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home  # Jenkins 설정을 로컬 폴더에 저장 (재시작해도 데이터 유지)
+      - /var/run/docker.sock:/var/run/docker.sock  # [중요] 호스트의 Docker를 Jenkins가 조종할 수 있게 함
+    environment:
+      - TZ=Asia/Seoul
+
 volumes:
   db_data:
