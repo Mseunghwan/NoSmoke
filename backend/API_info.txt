@@ -1,0 +1,324 @@
+금연 앱 API 명세서
+🔐 1. 사용자 관리 API
+회원가입
+POST /api/auth/register
+Request Body:
+json
+{
+  "username": "user123",
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response:
+json
+{
+  "success": true,
+  "message": "회원가입 성공",
+  "data": {
+    "id": 1,
+    "username": "user123",
+    "email": "user@example.com",
+    "points": 0
+  }
+}
+로그인
+POST /api/auth/login
+Request Body:
+json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response:
+json
+{
+  "success": true,
+  "message": "로그인 성공",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": 1,
+      "username": "user123",
+      "email": "user@example.com",
+      "points": 150
+    }
+  }
+}
+사용자 정보 조회
+GET /api/users/profile
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "username": "user123",
+    "email": "user@example.com",
+    "points": 150,
+    "created_at": "2025-01-01T00:00:00Z"
+  }
+}
+사용자 정보 수정
+PUT /api/users/profile
+Authorization: Bearer {token}
+Request Body:
+json
+{
+  "username": "newUsername",
+  "email": "newemail@example.com"
+}
+________________________________________
+🚬 2. 흡연정보 관리 API
+흡연정보 등록
+POST /api/smoking-info
+Authorization: Bearer {token}
+Request Body:
+json
+{
+  "cigarette_type": "말보로 골드",
+  "daily_consumption": 10,
+  "quit_start_date": "2025-01-01",
+  "quit_goal": "건강 회복",
+  "target_date": "2025-12-31"
+}
+Response:
+json
+{
+  "success": true,
+  "message": "흡연정보 등록 완료",
+  "data": {
+    "id": 1,
+    "user_id": 1,
+    "cigarette_type": "말보로 골드",
+    "daily_consumption": 10,
+    "quit_start_date": "2025-01-01",
+    "quit_goal": "건강 회복",
+    "target_date": "2025-12-31",
+    "created_at": "2025-01-01T00:00:00Z"
+  }
+}
+흡연정보 조회
+GET /api/smoking-info
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "cigarette_type": "말보로 골드",
+    "daily_consumption": 10,
+    "quit_start_date": "2025-01-01",
+    "quit_goal": "건강 회복",
+    "target_date": "2025-12-31",
+    "quit_days": 15,
+    "money_saved": 67500
+  }
+}
+흡연정보 수정
+PUT /api/smoking-info
+Authorization: Bearer {token}
+Request Body:
+json
+{
+  "cigarette_type": "말보로 골드",
+  "daily_consumption": 8,
+  "quit_goal": "건강 회복 및 금연",
+  "target_date": "2025-06-30"
+}
+________________________________________
+📝 3. 금연설문 관리 API
+설문 제출
+POST /api/surveys
+Authorization: Bearer {token}
+Request Body:
+json
+{
+  "is_success": true,
+  "stress_level": 3,
+  "stress_cause": "업무",
+  "craving_level": 2,
+  "additional_notes": "오늘은 크게 어렵지 않았음"
+}
+Response:
+json
+{
+  "success": true,
+  "message": "설문 제출 완료",
+  "data": {
+    "id": 1,
+    "user_id": 1,
+    "survey_date": "2025-01-15",
+    "is_success": true,
+    "stress_level": 3,
+    "stress_cause": "업무",
+    "craving_level": 2,
+    "additional_notes": "오늘은 크게 어렵지 않았음",
+    "points_earned": 10
+  }
+}
+설문 내역 조회 (월별)
+GET /api/surveys?year=2025&month=1
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "surveys": [
+      {
+        "id": 1,
+        "survey_date": "2025-01-15",
+        "is_success": true,
+        "stress_level": 3,
+        "stress_cause": "업무",
+        "craving_level": 2,
+        "additional_notes": "오늘은 크게 어렵지 않았음"
+      }
+    ],
+    "statistics": {
+      "total_surveys": 15,
+      "success_days": 12,
+      "success_rate": 80.0,
+      "average_stress": 3.2,
+      "average_craving": 2.8
+    }
+  }
+}
+오늘 설문 조회
+GET /api/surveys/today
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "has_survey": true,
+    "survey": {
+      "id": 1,
+      "survey_date": "2025-01-15",
+      "is_success": true,
+      "stress_level": 3,
+      "craving_level": 2
+    }
+  }
+}
+설문 수정
+PUT /api/surveys/{surveyId}
+Authorization: Bearer {token}
+Request Body:
+json
+{
+  "is_success": false,
+  "stress_level": 5,
+  "stress_cause": "가족 문제",
+  "craving_level": 4,
+  "additional_notes": "수정된 내용"
+}
+________________________________________
+📊 4. 통계 및 대시보드 API
+금연 대시보드
+GET /api/dashboard
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "quit_days": 15,
+    "money_saved": 67500,
+    "cigarettes_not_smoked": 150,
+    "health_improvements": [
+      "심박수 정상화",
+      "폐 기능 개선 시작"
+    ],
+    "current_streak": 5,
+    "longest_streak": 8,
+    "success_rate": 75.5,
+    "points": 150
+  }
+}
+월별 통계
+GET /api/statistics/monthly?year=2025&month=1
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "total_days": 31,
+    "success_days": 25,
+    "success_rate": 80.6,
+    "average_stress": 3.2,
+    "average_craving": 2.5,
+    "points_earned": 250,
+    "money_saved": 112500
+  }
+}
+________________________________________
+🎯 5. 포인트 관리 API
+포인트 내역 조회
+GET /api/points/history?page=1&size=10
+Authorization: Bearer {token}
+Response:
+json
+{
+  "success": true,
+  "data": {
+    "transactions": [
+      {
+        "id": 1,
+        "amount": 10,
+        "type": "EARN",
+        "description": "일일 설문 완료",
+        "created_at": "2025-01-15T10:00:00Z"
+      }
+    ],
+    "total_points": 150,
+    "page_info": {
+      "current_page": 1,
+      "total_pages": 3,
+      "total_elements": 25
+    }
+  }
+}
+
+🔧 공통 응답 형식
+성공 응답
+json
+{
+  "success": true,
+  "message": "요청 성공",
+  "data": { ... }
+}
+에러 응답
+json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "입력값이 올바르지 않습니다",
+    "details": [
+      {
+        "field": "email",
+        "message": "올바른 이메일 형식이 아닙니다"
+      }
+    ]
+  }
+}
+HTTP 상태 코드
+•	200 - 성공
+•	201 - 생성 성공
+•	400 - 잘못된 요청
+•	401 - 인증 필요
+•	403 - 권한 없음
+•	404 - 리소스 없음
+•	500 - 서버 오류
+
+📋 API 인증
+모든 보호된 API는 JWT 토큰을 사용합니다.
+헤더 형식:
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+토큰 만료 시간: 24시간
+

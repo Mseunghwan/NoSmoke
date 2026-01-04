@@ -1,0 +1,48 @@
+name: letsgo
+description: "A new Flutter project with Gemini AI integration."
+publish_to: 'none'
+
+version: 1.0.0+5
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2 # For state management
+  intl: ^0.18.0 # For date and currency formatting
+  shared_preferences: ^2.1.1 # For storing user settings locally
+  google_generative_ai: ^0.4.6
+  fl_chart: ^0.69.0
+  flutter_svg: ^2.0.9
+  confetti: ^0.7.0
+  win32: ^5.0.0
+  device_info_plus: ^10.1.2
+  awesome_notifications: ^0.8.2
+  flutter_dotenv: ^5.2.1
+  http: ^1.2.1 # API 통신을 위함
+  flutter_secure_storage: ^9.0.0 # JWT 토큰 저장을 위함
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/backgrounds/
+    - assets/badges/
+    - assets/characters/
+    - assets/chat_bg.png
+    - assets/image.png
+    - assets/config/.env
+
+  # Uncomment and list assets if you have any images or other assets to include
+  # assets:
+  #   - images/
