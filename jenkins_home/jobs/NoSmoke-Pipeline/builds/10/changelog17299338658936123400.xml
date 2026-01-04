@@ -1,0 +1,19 @@
+commit 956299686b8152adbf8c7858d7d41b412a96a9b3
+tree ee60adb444362a4afee72a5b4e5e22a287fa38fd
+parent eebd699f058d778b548eecb81566200c5f165ee4
+author Mseunghwan <minccc42710@gmail.com> 2026-01-05 02:58:37 +0900
+committer Mseunghwan <minccc42710@gmail.com> 2026-01-05 02:58:37 +0900
+
+    Fix: MockitoBean 적용
+
+
+:100644 100644 17f4622a3927f8e2d1ffdbe5c5fbc98bcd3b216c 36ab1edbb02ecb5a1d967a95dbcbea8553e545f0 M	backend/src/test/java/org/example/nosmoke/NoSmokeApplicationTests.java
+:000000 100644 0000000000000000000000000000000000000000 dd03efb96deaf6d4828e7ef8cdf12210ec2eed08 A	jenkins_home/jobs/NoSmoke-Pipeline/builds/9/build.xml
+:000000 100644 0000000000000000000000000000000000000000 19b09a22bfa2119e807af9ff7cf85325f4f55c5b A	jenkins_home/jobs/NoSmoke-Pipeline/builds/9/changelog14711679807722262978.xml
+:000000 100644 0000000000000000000000000000000000000000 22d904ff5124921aee77acf38fd7e017e6de7088 A	jenkins_home/jobs/NoSmoke-Pipeline/builds/9/log
+:000000 100644 0000000000000000000000000000000000000000 08df13874b38d5e7638e26ce841a4c7bc544f4c7 A	jenkins_home/jobs/NoSmoke-Pipeline/builds/9/log-index
+:000000 100644 0000000000000000000000000000000000000000 d8a5f1903b91b2cb7f8d82a960a788bc71f7dce0 A	jenkins_home/jobs/NoSmoke-Pipeline/builds/9/workflow-completed/flowNodeStore.xml
+:100644 100644 dfe878dda44fe8bf4e0a3beb4430c490967b0189 8d352f7a1085092ee306b2c9ab29cf32702bca81 M	jenkins_home/jobs/NoSmoke-Pipeline/builds/permalinks
+:100644 100644 ec635144f60048986bc560c5576355344005e6e7 f599e28b8ab0d8c9c57a486c89c4a5132dcbd3b2 M	jenkins_home/jobs/NoSmoke-Pipeline/nextBuildNumber
+:100644 100644 23b151fe728d7bd34d7a02a7b120d9077f5dbf9a 90829e22423910ce0695cbbdab02e578466c2e29 M	jenkins_home/queue.xml
+:160000 160000 8c5bcb2b2a7b431256f0304e69c9214bceeb0d1e eebd699f058d778b548eecb81566200c5f165ee4 M	jenkins_home/workspace/NoSmoke-Pipeline
