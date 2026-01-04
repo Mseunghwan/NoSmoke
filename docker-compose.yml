@@ -4,10 +4,11 @@ services:
     image: mysql:8.0
     container_name: nosmoke-db
     environment:
-      MYSQL_ROOT_PASSWORD: 95440949  # 원하는 비밀번호로 변경
-      MYSQL_DATABASE: noSmoke
-      MYSQL_USER: user
-      MYSQL_PASSWORD: 95440949
+      # .env 파일에서 값을 가져옴
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
@@ -20,12 +21,11 @@ services:
     depends_on:
       - db
     environment:
-      # Spring Boot가 DB 컨테이너를 바라보도록 설정
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/nosmoke?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: userpassword
-      # JWT Secret 등 필요한 환경변수 추가
-      JWT_SECRET: asdjfkhasdkjfhaekwslfnawqoelijhfiasd
+      # .env 파일의 값을 컨테이너 내부 환경변수로 주입
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}  # <-- DB와 똑같은 비밀번호 사용됨 (자동 해결!)
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8080:8080"
 
@@ -43,22 +43,22 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "80:80"  # 로컬호스트 80포트로 접근 가능
+      - "80:80"
     depends_on:
       - backend
       - ai-server
 
   # 5. Jenkins
   jenkins:
-    image: jenkins/jenkins:lts-jdk21  # 안정적인 LTS 버전 + Java 17
+    image: jenkins/jenkins:lts-jdk21
     container_name: nosmoke-jenkins
-    user: root  # Docker 소켓 접근 권한을 위해 root로 실행 (개발용 설정)
+    user: root
     ports:
-      - "9090:8080"  # 호스트의 9090포트로 접속 (8080은 이미 백엔드가 쓰니까 피함)
+      - "9090:8080"
       - "50000:50000"
     volumes:
-      - ./jenkins_home:/var/jenkins_home  # Jenkins 설정을 로컬 폴더에 저장 (재시작해도 데이터 유지)
-      - /var/run/docker.sock:/var/run/docker.sock  # [중요] 호스트의 Docker를 Jenkins가 조종할 수 있게 함
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TZ=Asia/Seoul
 
