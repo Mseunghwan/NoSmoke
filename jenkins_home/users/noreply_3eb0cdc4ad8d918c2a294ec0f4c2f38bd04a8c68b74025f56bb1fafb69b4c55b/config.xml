@@ -1,10 +1,15 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <user>
   <version>10</version>
-  <id>minccc427</id>
-  <fullName>Mseunghwan</fullName>
+  <id>noreply</id>
+  <fullName>noreply</fullName>
   <properties>
     <io.jenkins.plugins.thememanager.ThemeUserProperty plugin="theme-manager@327.v780d7096ec29"/>
+    <jenkins.security.ApiTokenProperty>
+      <tokenStore>
+        <tokenList/>
+      </tokenStore>
+    </jenkins.security.ApiTokenProperty>
     <jenkins.console.ConsoleUrlProviderUserProperty/>
     <com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty plugin="credentials@1460.v48765a_c7d849">
       <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash"/>
@@ -30,13 +35,10 @@
       <providerId>default</providerId>
     </org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty>
     <hudson.model.PaneStatusProperties>
-      <collapsed>
-        <string>buildQueue</string>
-        <string>executors</string>
-      </collapsed>
+      <collapsed/>
     </hudson.model.PaneStatusProperties>
     <jenkins.security.seed.UserSeedProperty>
-      <seed>95b1604de8b67af6</seed>
+      <seed>82c76a93b0406b5a</seed>
     </jenkins.security.seed.UserSeedProperty>
     <hudson.search.UserSearchProperty>
       <insensitiveSearch>true</insensitiveSearch>
@@ -45,22 +47,8 @@
     <jenkins.model.experimentalflags.UserExperimentalFlagsProperty>
       <flags/>
     </jenkins.model.experimentalflags.UserExperimentalFlagsProperty>
-    <hudson.security.HudsonPrivateSecurityRealm_-Details>
-      <passwordHash>#jbcrypt:$2a$10$Q0lVqTbPpmGM1HWxoENyteMpR01fwMkL4WZHBPVsyL.LLmmuLTdWa</passwordHash>
-    </hudson.security.HudsonPrivateSecurityRealm_-Details>
     <hudson.tasks.Mailer_-UserProperty plugin="mailer@525.v2458b_d8a_1a_71">
-      <emailAddress>minccc42710@gmail.com</emailAddress>
+      <emailAddress>noreply@github.com</emailAddress>
     </hudson.tasks.Mailer_-UserProperty>
-    <jenkins.security.ApiTokenProperty>
-      <tokenStore>
-        <tokenList/>
-      </tokenStore>
-    </jenkins.security.ApiTokenProperty>
-    <jenkins.security.LastGrantedAuthoritiesProperty>
-      <roles>
-        <string>authenticated</string>
-      </roles>
-      <timestamp>1767600007853</timestamp>
-    </jenkins.security.LastGrantedAuthoritiesProperty>
   </properties>
 </user>

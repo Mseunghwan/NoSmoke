@@ -1,5 +1,5 @@
 금연 앱 API 명세서
-🔐 1. 사용자 관리 API
+1. 사용자 관리 API
 회원가입
 POST /api/auth/register
 Request Body:
@@ -69,7 +69,7 @@ json
   "email": "newemail@example.com"
 }
 ________________________________________
-🚬 2. 흡연정보 관리 API
+2. 흡연정보 관리 API
 흡연정보 등록
 POST /api/smoking-info
 Authorization: Bearer {token}
@@ -128,7 +128,7 @@ json
   "target_date": "2025-06-30"
 }
 ________________________________________
-📝 3. 금연설문 관리 API
+3. 금연설문 관리 API
 설문 제출
 POST /api/surveys
 Authorization: Bearer {token}
@@ -217,7 +217,7 @@ json
   "additional_notes": "수정된 내용"
 }
 ________________________________________
-📊 4. 통계 및 대시보드 API
+4. 통계 및 대시보드 API
 금연 대시보드
 GET /api/dashboard
 Authorization: Bearer {token}
@@ -257,7 +257,7 @@ json
   }
 }
 ________________________________________
-🎯 5. 포인트 관리 API
+5. 포인트 관리 API
 포인트 내역 조회
 GET /api/points/history?page=1&size=10
 Authorization: Bearer {token}
@@ -284,7 +284,7 @@ json
   }
 }
 
-🔧 공통 응답 형식
+공통 응답 형식
 성공 응답
 json
 {
