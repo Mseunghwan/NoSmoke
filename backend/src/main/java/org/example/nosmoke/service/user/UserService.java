@@ -1,5 +1,6 @@
 package org.example.nosmoke.service.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.nosmoke.dto.user.*;
 import org.example.nosmoke.entity.User;
@@ -151,4 +152,31 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Transactional
+    public void updatePassword(Long userId, PasswordUpdateRequestDto requestDto) {
+        // 1. 사용자 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        // 2. 현재 비밀번호 확인(DB에 저장된 암호화 된 비밀번호 < - > 입력받은 비밀번호)
+        if(!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 3. 새 비밀번호와 확인 비밀번호가 같은지 검증
+        if(!requestDto.getNewPassword().equals(requestDto.getNewPasswordCheck())){
+            throw new IllegalArgumentException("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        // 4. 현재 비밀번호와 새 비밀번호가 같은지 확인
+        if(!passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())){
+            throw new IllegalArgumentException("새 비밀번호는 기존 비밀번호와 달라야 합니다.");
+        }
+
+        // 5. 비밀번호 암호화 및 수정
+        String encodedPassword = passwordEncoder.encode(requestDto.getNewPassword());
+        user.updatePassword(encodedPassword);
+
+        // @Transactional이 있으니 userRepository.save(user)는 필요없다구~
+    }
 }
