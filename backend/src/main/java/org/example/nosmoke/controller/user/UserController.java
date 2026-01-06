@@ -116,6 +116,30 @@ public class UserController {
         }
     }
 
+    @PutMapping("/password/{userId}")
+    public ResponseEntity<ApiResponse<String>> updatePassword(
+            @PathVariable Long userId,
+            @Valid @RequestBody PasswordUpdateRequestDto requestDto
+    ){
+        try{
+            userService.updatePassword(userId, requestDto);
+
+            ApiResponse<String> response = ApiResponse.success(
+                    "비밀번호 변경이 완료되었습니다.",
+                    "SUCCESS"
+            );
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            ApiResponse<String> response = ApiResponse.error(
+                    "PASSWORD_UPDATE_ERROR",
+                    e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+    }
+
     // 이메일 중복 확인
     @GetMapping("/check-email")
     public ResponseEntity<ApiResponse<Boolean>> checkEmailDuplicate(
