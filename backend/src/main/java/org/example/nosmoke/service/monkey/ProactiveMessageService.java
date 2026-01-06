@@ -1,6 +1,8 @@
 package org.example.nosmoke.service.monkey;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.example.nosmoke.entity.User;
 import org.example.nosmoke.repository.UserRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProactiveMessageService {
 
     private final UserRepository userRepository;
@@ -19,7 +22,7 @@ public class ProactiveMessageService {
     @Scheduled(cron = "0 0 9 * * *")
     public void sendProactiveMessagesToAllUsers(){
 
-        System.out.println("모든 유저에게 메시지를 일단 보내봅시다");
+        log.info("모든 유저에게 능동 메시지 전송 작업 시작");
 
         // User 들의 정보를 DB에서 찾아옵니다
         List<User> allUsers = userRepository.findAll();
@@ -28,7 +31,7 @@ public class ProactiveMessageService {
         for (User user : allUsers) {
             monkeyDialogueService.generateAndSaveProactiveMessage(user);
         }
-        System.out.println("능동 메시지 전송 완료");
+        log.info("능동 메시지 전송 작업 완료");
     }
 
 }

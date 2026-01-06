@@ -1,4 +1,4 @@
-package org.example.nosmoke.controller.quitsurvey;
+package org.example.nosmoke.controller.smokinginfo;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

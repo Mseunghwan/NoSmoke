@@ -1,6 +1,8 @@
 package org.example.nosmoke.service.dashboard;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.example.nosmoke.dto.dashboard.DashboardResponseDto;
 import org.example.nosmoke.entity.QuitSurvey;
 import org.example.nosmoke.entity.SmokingInfo;
@@ -22,6 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class DashboardService {
     public final UserRepository userRepository;
     private final SmokingInfoRepository smokingInfoRepository;
@@ -47,16 +50,18 @@ public class DashboardService {
             quitDays = ChronoUnit.DAYS.between(smokingInfo.getQuitStartDate(), LocalDate.now());
             cigarettesNotSmoked = quitDays * smokingInfo.getDailyConsumption();
         }
-        System.out.println("=====================================");
-        System.out.println(">>> [DEBUG] 참은 담배 개수: " + cigarettesNotSmoked);
-        System.out.println(">>> [DEBUG] 한 갑당 가격: " + PRICE_PER_PACK);
-        System.out.println(">>> [DEBUG] 한 갑당 개비 수: " + CIGARETTES_PER_PACK);
 
+        log.info("=====================================");
+        log.info(">>> [INFO] 금연 시작일: " + smokingInfo.getQuitStartDate());
+        log.info(">>> [INFO] 오늘 날짜: " + LocalDate.now());
+        log.info(">>> [INFO] 금연 일수: " + quitDays);
+        log.info("=====================================");
+        log.info(">>> [INFO] 참지 않은 담배 개수: " + cigarettesNotSmoked);
+        log.info(">>> [INFO] 한 갑당 가격: " + PRICE_PER_PACK);
+        log.info(">>> [INFO] 한 갑당 개비 수: " + CIGARETTES_PER_PACK);
         // 절약금액 계산
         long savedMoney = (cigarettesNotSmoked * PRICE_PER_PACK) / CIGARETTES_PER_PACK;
-        System.out.println(">>> [DEBUG] 계산된 절약 금액: " + savedMoney);
-        System.out.println("=====================================");
-
+        log.info(">>> [INFO] 계산된 절약 금액: " + savedMoney);
         // 연속 성공일자 계산
         int currentStreak = 0;
         int longestStreak = 0;
