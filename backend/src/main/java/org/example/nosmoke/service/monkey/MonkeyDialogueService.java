@@ -1,5 +1,4 @@
 package org.example.nosmoke.service.monkey;
-// 사용자 행동(설문, 대화) 토대로 반응하는 스털링 Service
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +10,11 @@ import org.example.nosmoke.repository.MonkeyMessageRepository;
 import org.example.nosmoke.repository.QuitSurveyRepository;
 import org.example.nosmoke.repository.SmokingInfoRepository;
 import org.example.nosmoke.repository.UserRepository;
-import org.example.nosmoke.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -28,23 +28,77 @@ public class MonkeyDialogueService {
     private final ChatLanguageModel chatLanguageModel;
     private final QuitSurveyRepository quitSurveyRepository;
 
-    // QuitSurveyService에서 설문 DB에 저장한 신호를 보내면 해당 service 호출,
-    // QuitSurveyService가 MonkeyDialogueService 알도록 의존성 주입해주어야
+    // 스털링과 1 : 1 채팅 기능
+    @Transactional
+    public String chatWithSterling(Long userId, String userMessage){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다"));
+        SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId).orElse(null);
+
+        // 스털링 페르소나 및 사용자 정보 주입
+        String systemPrompt = createPersonaPrompt(user, smokingInfo);
+
+        // 프롬프트 결합
+        String fullPrompt = systemPrompt + "\n\n[주인님의 말씀]: " + userMessage + "\n[스털링의 대답]:";
+
+        String response = chatLanguageModel.generate(fullPrompt);
+
+        // 대화 내역 저장
+        MonkeyMessage message = MonkeyMessage.builder()
+                .user(user)
+                .content(response) // AI 응답 저장
+                .messageType(MonkeyMessage.MessageType.REACTIVE)
+                .build();
+
+        monkeyMessageRepository.save(message);
+
+        return response;
+    }
+
+    // 건강 상태 분석 (현재 상태 기반 조언)
+    public String analyzeHealth(Long userId) {
+        SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId).orElse(null);
+        if (smokingInfo == null || smokingInfo.getQuitStartDate() == null) {
+            return "끼끼! 아직 금연 정보를 등록하지 않으셨군요. 정보 탭에서 금연 시작일을 설정해주세요!";
+        }
+
+        // Duration -> ChronoUnit.DAYS 사용 (LocalDateTime.now() -> LocalDate.now())
+        long quitDays = ChronoUnit.DAYS.between(smokingInfo.getQuitStartDate(), LocalDate.now());
+
+        String prompt = String.format(
+                "당신은 금연 클리닉의 전문 의사입니다. 환자는 현재 금연 %d일차입니다. " +
+                        "현재 시점에서 의학적으로 환자의 신체에 어떤 긍정적인 변화가 일어나고 있는지 설명하고, " +
+                        "앞으로 주의해야 할 금단 증상이나 건강 관리 조언을 전문적이고 정중한 '해요체'(~해요, ~입니다)로 3줄 요약해서 분석해 주세요. " +
+                        "캐릭터 연기나 불필요한 미사여구는 배제하고, 신뢰감 있는 정보를 전달해 주세요.",
+                quitDays
+        );
+
+        return chatLanguageModel.generate(prompt);
+    }
+
+    // 페르소나 프롬프트 생성기 (중복 제거용)
+    private String createPersonaPrompt(User user, SmokingInfo info) {
+        String name = user.getName();
+
+        // Duration -> ChronoUnit.DAYS 사용
+        long days = (info != null && info.getQuitStartDate() != null) ?
+                ChronoUnit.DAYS.between(info.getQuitStartDate(), LocalDate.now()) : 0;
+
+        return "당신은 '스털링'이라는 이름의 AI 금연 도우미 원숭이입니다. " +
+                "사용자를 '" + name + " 주인님'이라고 부르세요. 말투는 예의 바르지만 장난기 있고 귀여워야 하며, 말 끝에 '끼끼!'나 '끽!'을 붙이세요. " +
+                "주인님은 현재 금연 " + days + "일차입니다. 주인님의 말을 잘 듣고 금연을 응원해주세요.";
+    }
+
+    // QuitSurveyService에서 설문 DB에 저장한 신호를 보내면 해당 service 호출
     @Transactional
     public void generateAndSaveReactiveMessage(Long userId, QuitSurvey latestSurvey) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("메시지를 생성할 사용자를 찾을 수 없습니다. id = " + userId));
 
-        // 사용자 기본 흡연정보 불러옴(gemini에 전달 정보 위함)
         SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId).orElse(null);
-
-        // 프롬프트 생성
         String prompt = createPrompt(smokingInfo, latestSurvey);
-
-        // 모델 호출 후 응답 회신
         String answer = chatLanguageModel.generate(prompt);
 
-        // monkey 엔터티 생성
         MonkeyMessage message = MonkeyMessage.builder()
                 .user(user)
                 .content(answer)
@@ -52,14 +106,11 @@ public class MonkeyDialogueService {
                 .build();
 
         monkeyMessageRepository.save(message);
-
     }
 
     @Transactional
     public void generateAndSaveProactiveMessage(User user) {
         SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(user.getId()).orElse(null);
-
-        // 최근 5개의 설문기록 조회
         List<QuitSurvey> recentSurveys = quitSurveyRepository.findTop5ByUserIdOrderByCreatedAtDesc(user.getId());
 
         String prompt = createProactivePrompt(user, smokingInfo, recentSurveys);
@@ -95,14 +146,13 @@ public class MonkeyDialogueService {
     }
 
     public String createProactivePrompt(User user, SmokingInfo smokingInfo, List<QuitSurvey> recentSurveys) {
-        // 금연 일수 세기
+        // Duration -> ChronoUnit.DAYS 사용
         long quitDays = (smokingInfo != null && smokingInfo.getQuitStartDate() != null)
-                ? java.time.Duration.between(smokingInfo.getQuitStartDate(), java.time.LocalDateTime.now()).toDays()
+                ? ChronoUnit.DAYS.between(smokingInfo.getQuitStartDate(), LocalDate.now())
                 : 0;
 
         String quitGoal = (smokingInfo != null) ? smokingInfo.getQuitGoal() : "";
 
-        // 최근 설문 데이터 분석
         long successCount = recentSurveys.stream().filter(QuitSurvey::isSuccess).count();
         String recentTrend = "최근 금연 성공률은 " + (recentSurveys.isEmpty() ? 0 : (successCount * 100 / recentSurveys.size())) + "%에요.";
 
@@ -117,5 +167,4 @@ public class MonkeyDialogueService {
                 user.getName(), quitGoal, quitDays, recentTrend
         );
     }
-
 }

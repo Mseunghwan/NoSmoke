@@ -49,7 +49,8 @@ dependencies {
 
     // Langchain4j
     implementation 'dev.langchain4j:langchain4j:0.33.0'
-    implementation 'dev.langchain4j:langchain4j-vertex-ai-gemini:0.33.0'
+    implementation 'dev.langchain4j:langchain4j-google-ai-gemini:0.35.0'
+
 
 }
 
