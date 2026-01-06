@@ -1,5 +1,4 @@
 package org.example.nosmoke.service.monkey;
-// 사용자 행동(설문, 대화) 토대로 반응하는 스털링 Service
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +26,63 @@ public class MonkeyDialogueService {
 
     private final ChatLanguageModel chatLanguageModel;
     private final QuitSurveyRepository quitSurveyRepository;
+
+    // 스털링과 1 : 1 채팅 기능
+    @Transactional
+    public String chatWithSterling(Long userId, String userMessage){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다"));
+        SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId).orElse(null);
+
+        // 스털링 페르소나 및 사용자 정보 주입
+        String systemPrompt = createPersonaPrompt(user, smokingInfo);
+
+        // 프롬프트 결합 (추후 ChatMemory 적용..? )
+        String fullPrompt = systemPrompt + "\n\n[주인님의 말씀]" + userMessage + "\n[스털링의 대답]";
+
+        String response = chatLanguageModel.generate(fullPrompt);
+
+        // 대화 내역 저장
+        MonkeyMessage message = MonkeyMessage.builder()
+                .user(user)
+                .content(response) // AI 응답 저장
+                .messageType(MonkeyMessage.MessageType.REACTIVE)
+                .build();
+
+        monkeyMessageRepository.save(message);
+
+        return response;
+    }
+
+    // 건강 상태 분석 (현재 상태 기반 조언)
+    public String analyzeHealth(Long userId) {
+        SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId).orElse(null);
+        if (smokingInfo == null || smokingInfo.getQuitStartDate() == null) {
+            return "끼끼! 아직 금연 정보를 등록하지 않으셨군요. 정보 탭에서 금연 시작일을 설정해주세요!";
+        }
+
+        long quitDays = java.time.Duration.between(smokingInfo.getQuitStartDate(), java.time.LocalDateTime.now()).toDays();
+
+        String prompt = String.format(
+                "너는 금연 전문가 원숭이 '스털링'이야. 주인님은 금연 %d일차야. " +
+                        "의학적 지식을 바탕으로 현재 신체에 어떤 긍정적인 변화가 일어나고 있는지, " +
+                        "그리고 앞으로 주의해야 할 금단 증상과 대처법을 귀엽고 격려하는 말투로 3줄 요약해서 알려줘. 말 끝마다 '끼끼!'를 붙여.",
+                quitDays
+        );
+
+        return chatLanguageModel.generate(prompt);
+    }
+
+    // 페르소나 프롬프트 생성기 (중복 제거용)
+    private String createPersonaPrompt(User user, SmokingInfo info) {
+        String name = user.getName();
+        long days = (info != null && info.getQuitStartDate() != null) ?
+                java.time.Duration.between(info.getQuitStartDate(), java.time.LocalDateTime.now()).toDays() : 0;
+
+        return "당신은 '스털링'이라는 이름의 AI 금연 도우미 원숭이입니다. " +
+                "사용자를 '" + name + " 주인님'이라고 부르세요. 말투는 예의 바르지만 장난기 있고 귀여워야 하며, 말 끝에 '끼끼!'나 '끽!'을 붙이세요. " +
+                "주인님은 현재 금연 " + days + "일차입니다. 주인님의 말을 잘 듣고 금연을 응원해주세요.";
+    }
 
     // QuitSurveyService에서 설문 DB에 저장한 신호를 보내면 해당 service 호출,
     // QuitSurveyService가 MonkeyDialogueService 알도록 의존성 주입해주어야
