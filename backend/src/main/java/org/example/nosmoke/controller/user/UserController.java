@@ -90,14 +90,14 @@ public class UserController {
         }
     }
 
-    // 사용자 정보 수정
+    // 사용자 명 수정
     @PutMapping("/profile/{userId}")
     public ResponseEntity<ApiResponse<UserUpdateResponseDto>> updateProfile(
             @PathVariable Long userId,
-            @Valid @RequestBody UserUpdateRequestDto requestDto) {
+            @Valid @RequestBody UserNameUpdateRequestDto requestDto) {
 
         try{
-            UserUpdateResponseDto responseDto = userService.updateProfile(userId, requestDto);
+            UserUpdateResponseDto responseDto = userService.updateNameProfile(userId, requestDto);
 
             ApiResponse<UserUpdateResponseDto> response = ApiResponse.success(
                     "사용자 정보 수정 완료",
