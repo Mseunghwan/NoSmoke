@@ -91,20 +91,21 @@ public class UserService {
     }
 
     // 사용자 정보 수정
-    public UserUpdateResponseDto updateProfile(Long userId, UserUpdateRequestDto requestDto) {
+    public UserUpdateResponseDto updateNameProfile(Long userId, UserNameUpdateRequestDto requestDto) {
 
         // 1. 사용자 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         // 2. 입력받은 이메일 중복 검증(다른 사용자가 사용하는 이메일인지 확인)
-        if(!user.getEmail().equals(requestDto.getEmail()) &&
-        userRepository.existsByEmail(requestDto.getEmail())) {
-            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        if(!user.getName().equals(requestDto.getName()) &&
+        userRepository.existsByName(requestDto.getName())) {
+            throw new IllegalArgumentException("이미 사용중인 사용자명입니다.");
         }
 
 
         // 3. 사용자 정보 수정(실제로는 User 엔티티에 Update 메서드 추가 필요(현재는 새로운 User 객체 생성(나중에 개선해야함!!)
+        user.updateName(requestDto.getName());
 
         // 4. 수정된 정보 저장 및 리턴
         User updatedUser = userRepository.save(user);
