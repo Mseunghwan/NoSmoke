@@ -51,7 +51,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // flutter 대시보드 정보 요청 시 Options 요청 보내기에 Security 에서 예외처리
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll().anyRequest().authenticated() // 모니터링 엔드포인트 허용
                         .requestMatchers(
                                 "/api/auth/signup",
                                 "/api/auth/login",
@@ -59,7 +58,8 @@ public class SecurityConfig {
                                 // Swagger UI
                                 "/swagger-resources/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/actuator/**" // 모니터링 엔드포인트 허용
                         ).permitAll()
                         .anyRequest().authenticated() // 위 3개 주소 외 인증(유효한 JWT를 가진 상태, 즉 로그인 상태)을 거쳐야만 접근 허용하겠다는 규칙 적용
                 )
