@@ -25,14 +25,7 @@ services:
     ports:
       - "8080:8080"
 
-  # 3. FastAPI AI Server
-  ai-server:
-    build: ./ai-server
-    container_name: nosmoke-ai
-    ports:
-      - "8000:8000"
-
-  # 4. Nginx (Gateway)
+  # 3. Nginx (Gateway)
   nginx:
     image: nginx:latest
     container_name: nosmoke-nginx
@@ -42,9 +35,8 @@ services:
       - "80:80"
     depends_on:
       - backend
-      - ai-server
 
-  # 5. Jenkins
+  # 4. Jenkins
   jenkins:
     image: jenkins/jenkins:lts-jdk21
     container_name: nosmoke-jenkins
@@ -58,5 +50,38 @@ services:
     environment:
       - TZ=Asia/Seoul
 
+  # 5. Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nosmoke-prometheus
+    ports:
+      - "9091:9090" # 호스트 포트 9091로 변경(Jenkins:9090)
+    volumes:
+      # 설정파일 연결
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # 데이터 영속성(컨테이너가 꺼져도 수집한 데이터 보존)
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nosmoke-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      # 대시보드 설정, 계정 정보 영속성
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+
+# 볼륨 정의(도커가 관리하는 저장소)
 volumes:
   db_data:
+  prometheus_data:
+  grafana_data:

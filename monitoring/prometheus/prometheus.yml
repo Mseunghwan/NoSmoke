@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s # 15초 마다 매트릭 수집
+
+scrape_configs:
+  - job_name: 'nosmoke_backend'
+    metrics_path: '/actuator/prometheus' # 스프링 부트가 메트릭을 뿌려주는 경로
+    scrape_interval: 5s
+    static_configs:
+      # docker compose 서비스 명 nosmoke-backend를 target으로
+      - targets: ['nosmoke-backend:8080']
