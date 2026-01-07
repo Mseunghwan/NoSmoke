@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // flutter 대시보드 정보 요청 시 Options 요청 보내기에 Security 에서 예외처리
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll().anyRequest().authenticated() // 모니터링 엔드포인트 허용
                         .requestMatchers(
                                 "/api/auth/signup",
                                 "/api/auth/login",
