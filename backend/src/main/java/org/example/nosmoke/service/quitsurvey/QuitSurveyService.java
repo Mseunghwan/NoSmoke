@@ -6,7 +6,7 @@ import org.example.nosmoke.entity.QuitSurvey;
 import org.example.nosmoke.repository.MonkeyMessageRepository;
 import org.example.nosmoke.repository.QuitSurveyRepository;
 import org.example.nosmoke.repository.UserRepository;
-import org.example.nosmoke.service.monkey.MonkeyDialogueService;
+//import org.example.nosmoke.service.monkey.MonkeyDialogueService;
 import org.example.nosmoke.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import java.util.List;
 public class QuitSurveyService {
     private final QuitSurveyRepository quitSurveyRepository;
     private final UserRepository userRepository;
-    private final MonkeyDialogueService monkeyDialogueService;
+//    private final MonkeyDialogueService monkeyDialogueService;
     private final UserService userService;
 
 //    일일 금연 설문 저장 메서드
@@ -46,7 +46,7 @@ public class QuitSurveyService {
             userService.addPoints(userId, POINTS_FOR_SUCCESS);
         }
 
-        monkeyDialogueService.generateAndSaveReactiveMessage(userId, savedSurvey);
+//        monkeyDialogueService.generateAndSaveReactiveMessage(userId, savedSurvey);
 
         return savedSurvey;
 
