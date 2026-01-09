@@ -2,6 +2,7 @@
 FROM gradle:8.5-jdk21 AS builder
 WORKDIR /app
 COPY . .
+RUN sed -i 's/\r$//' ./gradlew && chmod +x ./gradlew
 # 테스트 제외하고 빌드 (속도 향상)
 RUN ./gradlew clean build -x test
 
