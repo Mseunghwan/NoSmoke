@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.nosmoke.dto.ApiResponse;
 import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
-import org.example.nosmoke.service.monkey.MonkeyDialogueService;
+import org.example.nosmoke.service.monkey.MonkeyFacade;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/monkey")
 @RequiredArgsConstructor
 public class MonkeyController {
-    private final MonkeyDialogueService monkeyDialogueService;
+    private final MonkeyFacade monkeyFacade;
 
     // 스털링 챗봇 기능
     @PostMapping("/chat/{userId}")
@@ -27,7 +27,7 @@ public class MonkeyController {
             @RequestBody Map<String, String> payload // {"message": "금연이 너무 힘들어"} 식으로
             ){
         String userMessage = payload.get("message");
-        String aiResponse = monkeyDialogueService.chatWithSterling(userId, userMessage);
+        String aiResponse = monkeyFacade.chatWithSterling(userId, userMessage);
 
         return ResponseEntity.ok(ApiResponse.success("응답 성공", aiResponse));
     }
@@ -35,7 +35,7 @@ public class MonkeyController {
     // 건강 분석 요청
     @PostMapping("/analysis/{userId}")
     public ResponseEntity<ApiResponse<String>> getHealthAnalysis(@PathVariable Long userId) {
-        String analysis = monkeyDialogueService.analyzeHealth(userId);
+        String analysis = monkeyFacade.analyzeHealth(userId);
         return ResponseEntity.ok(ApiResponse.success("분석 완료", analysis));
     }
 
@@ -45,7 +45,7 @@ public class MonkeyController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = authentication.getName();
 
-            List<MonkeyMessage> messages = monkeyDialogueService.findMessagesByUserId(Long.parseLong(userId));
+            List<MonkeyMessage> messages = monkeyFacade.findMessagesByUserId(Long.parseLong(userId));
 
             List<MonkeyMessageResponseDto> responseDtos = messages.stream()
                     .map(MonkeyMessageResponseDto::new)
