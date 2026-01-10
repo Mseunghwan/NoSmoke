@@ -2,10 +2,11 @@ package org.example.nosmoke.service.monkey;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.nosmoke.config.RabbitMqConfig;
+import org.example.nosmoke.dto.monkey.MonkeyAiRequestEvent;
 import org.example.nosmoke.dto.monkey.MonkeyChatContextDto;
 import org.example.nosmoke.entity.MonkeyMessage;
-import org.example.nosmoke.entity.SmokingInfo;
-import org.example.nosmoke.entity.User;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,26 +17,25 @@ import java.util.List;
 public class MonkeyFacade {
 
     private final MonkeyService monkeyService;
-    private final AiService aiService;
+    // Facade 에서 이제 더이상 AI를 직접 부르지 않아도 되기에 AiService가 아닌 RabbitTemplate 부름
+    private final RabbitTemplate rabbitTemplate;
+
 
     // 채팅 기능
     public String chatWithSterling(Long userId, String userMessage){
-
         MonkeyChatContextDto context = monkeyService.getChatContext(userId);
-
 
         String prompt = monkeyService.createPersonPrompt(context, userMessage);
 
+        rabbitTemplate.convertAndSend(
+                RabbitMqConfig.EXCHANGE_NAME,
+                RabbitMqConfig.ROUTING_KEY,
+                new MonkeyAiRequestEvent(userId, prompt)
+        );
 
-        String aiResponse = aiService.generateResponse(prompt);
+        log.info(">>> AI 요청 큐 발행 완료 (User: {}) ", userId);
 
-        try {
-            monkeyService.saveMessage(userId, aiResponse, MonkeyMessage.MessageType.REACTIVE);
-        } catch (Exception e) {
-            log.error("AI 응답 저장 실패 (유저: {}): {}", userId, aiResponse);
-        }
-
-        return aiResponse;
+        return "스털링이 고민을 시작했습니다...";
     }
 
     // 건강 분석 기능
@@ -48,7 +48,15 @@ public class MonkeyFacade {
 
         String prompt = monkeyService.createHealthAnalysisPrompt(context);
 
-        return aiService.generateResponse(prompt);
+        rabbitTemplate.convertAndSend(
+                RabbitMqConfig.EXCHANGE_NAME,
+                RabbitMqConfig.ROUTING_KEY,
+                new MonkeyAiRequestEvent(userId, prompt)
+        );
+
+        log.info(">>> 건강 보고서 큐 발행 완료 (User: {}) ", userId);
+
+        return "건강 보고서를 작성 중 입니다..";
     }
 
     // 메세지 조회
