@@ -51,4 +51,9 @@ public class MonkeyFacade {
         return aiService.generateResponse(prompt);
     }
 
+    // 메세지 조회
+    public List<MonkeyMessage> findMessagesByUserId(Long userId) {
+        return monkeyService.findMessagesByUserId(userId);
+    }
+
 }

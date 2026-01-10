@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -74,5 +75,9 @@ public class MonkeyService {
         monkeyMessageRepository.save(message);
     }
 
+    // 메시지 조회
+    public List<MonkeyMessage> findMessagesByUserId(Long userId) {
+        return monkeyMessageRepository.findByUser_IdOrderByCreatedAtDesc(userId);
+    }
 
 }
