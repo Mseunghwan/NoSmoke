@@ -85,7 +85,7 @@ services:
     depends_on:
       - prometheus
 
-  # 7. RabiitMQ
+  # 7. RabbitMQ
   rabbitmq:
     image: rabbitmq:management
     container_name: nosmoke-rabbitmq
@@ -93,8 +93,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEAFULT_USER: guest
-      RABBITMQ_DEAFULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
       interval: 10s
