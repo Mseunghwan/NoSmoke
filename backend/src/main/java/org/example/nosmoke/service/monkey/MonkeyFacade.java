@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.nosmoke.config.RabbitMqConfig;
 import org.example.nosmoke.dto.monkey.MonkeyAiRequestEvent;
 import org.example.nosmoke.dto.monkey.MonkeyChatContextDto;
+import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class MonkeyFacade {
     private final MonkeyService monkeyService;
     // Facade 에서 이제 더이상 AI를 직접 부르지 않아도 되기에 AiService가 아닌 RabbitTemplate 부름
     private final RabbitTemplate rabbitTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
 
     // 채팅 기능
@@ -57,6 +60,27 @@ public class MonkeyFacade {
         log.info(">>> 건강 보고서 큐 발행 완료 (User: {}) ", userId);
 
         return "건강 보고서를 작성 중 입니다..";
+    }
+
+    public void sendWelcomeMessage(Long userId){
+        String welcomeText = "어서오세요! 금연 도우미 스털링입니다.\n오늘 몸 상태는 좀 어떠신가요?";
+
+        MonkeyMessageResponseDto responseDto = MonkeyMessageResponseDto.builder()
+                .content(welcomeText)
+                .messageType("PROACTIVE")
+                .build();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(500); // 0.5초 대기 - 자연스러움 위함
+
+                messagingTemplate.convertAndSend("/sub/channel/" + userId, responseDto);
+                log.info(">>> [Proactive] 스털링이 먼저 인사를 건넸습니다. (To: {})", userId);
+            } catch (InterruptedException e) {
+                log.error(">>> 웰컴 메시지 전송 중 에러", e);
+                Thread.currentThread().interrupt();
+            }
+        }).start();
     }
 
     // 메세지 조회

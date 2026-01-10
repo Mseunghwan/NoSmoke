@@ -1,11 +1,16 @@
 package org.example.nosmoke.dto.monkey;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.example.nosmoke.entity.MonkeyMessage;
 
 import java.time.LocalDateTime;
 
+
 @Getter
+@Builder
+@AllArgsConstructor
 public class MonkeyMessageResponseDto {
 
     private final Long messageId;
@@ -19,4 +24,5 @@ public class MonkeyMessageResponseDto {
         this.messageType = monkeyMessage.getMessageType().name();
         this.createdAt = monkeyMessage.getCreatedAt();
     }
+
 }
