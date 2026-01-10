@@ -9,8 +9,10 @@ import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +24,7 @@ public class MonkeyFacade {
     // Facade 에서 이제 더이상 AI를 직접 부르지 않아도 되기에 AiService가 아닌 RabbitTemplate 부름
     private final RabbitTemplate rabbitTemplate;
     private final SimpMessagingTemplate messagingTemplate;
+    private final TaskScheduler taskScheduler;
 
 
     // 채팅 기능
@@ -70,17 +73,14 @@ public class MonkeyFacade {
                 .messageType("PROACTIVE")
                 .build();
 
-        new Thread(() -> {
+        taskScheduler.schedule(() -> {
             try {
-                Thread.sleep(500); // 0.5초 대기 - 자연스러움 위함
-
                 messagingTemplate.convertAndSend("/sub/channel/" + userId, responseDto);
                 log.info(">>> [Proactive] 스털링이 먼저 인사를 건넸습니다. (To: {})", userId);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 log.error(">>> 웰컴 메시지 전송 중 에러", e);
-                Thread.currentThread().interrupt();
             }
-        }).start();
+        }, Instant.now().plusMillis(500));
     }
 
     // 메세지 조회
