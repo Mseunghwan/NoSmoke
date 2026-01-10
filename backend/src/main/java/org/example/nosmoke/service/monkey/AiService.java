@@ -2,15 +2,15 @@ package org.example.nosmoke.service.monkey;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import lombok.RequiredArgsConstructor;
-import org.example.nosmoke.entity.MonkeyMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.example.nosmoke.entity.SmokingInfo;
 import org.example.nosmoke.entity.User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AiService {

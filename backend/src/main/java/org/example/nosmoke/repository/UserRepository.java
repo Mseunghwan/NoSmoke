@@ -20,6 +20,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 // Optional? 값이 있을 수도 있고, 없을 수도 있다를 표현하는 클래스
 
+    default User getByIdOrThrow(Long userId){
+        return findById(userId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다. ID : " + userId));
+    }
+
     Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
     Optional<User> findByName(String name);
