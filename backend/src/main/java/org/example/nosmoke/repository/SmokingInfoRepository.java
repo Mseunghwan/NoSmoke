@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface SmokingInfoRepository extends JpaRepository<SmokingInfo, Long> {
     Optional<SmokingInfo> findByUserId(Long userId);
 
-    default SmokingInfo getByUserIdOrThrow(Long userId){
-        return findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("금연 정보를 찾을 수 없습니다. 설정에서 정보를 입력하세요"));
+    // 정보가 없으면 null을 반환하는 편의 메서드
+    default SmokingInfo getByUserIdOrNull(Long userId) {
+        return findByUserId(userId).orElse(null);
     }
 
 }

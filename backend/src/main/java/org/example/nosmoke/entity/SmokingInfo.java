@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Getter
@@ -49,5 +50,12 @@ public class SmokingInfo extends BaseEntity{
         this.dailyConsumption = dailyConsumption;
         this.targetDate = targetDate;
         this.quitGoal = quitGoal;
+    }
+
+    public long getQuitDays(){
+        if(this.quitStartDate == null){
+            return 0;
+        }
+        return ChronoUnit.DAYS.between(this.quitStartDate, LocalDate.now());
     }
 }
