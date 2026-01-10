@@ -25,16 +25,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        log.info(">>> JWT 필터 시작 - 요청 URL: " + httpRequest.getRequestURI());
-
         // 1. 헤더에서 JWT 를 받아옵니다
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
-        log.info(">>> 추출된 Token : " + token);
-
         // 2. 유효한 토큰인지 확인합니다
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            log.info(">>> 토큰이 유효함 인증 시작");
             // "Bearer " 접두사 제거
             if (token.startsWith("Bearer")) {
                 token = token.substring(7);
@@ -44,8 +39,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             // SecurityContext 에 Authentication 객체를 저장합니다
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } else  {
-            log.error(">>> 토큰이 널이거나 유효하지 않음");
         }
         chain.doFilter(request, response);
     }

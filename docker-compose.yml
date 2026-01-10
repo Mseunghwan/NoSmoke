@@ -17,11 +17,16 @@ services:
     container_name: nosmoke-backend
     depends_on:
       - db
+      - rabbitmq
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
     ports:
       - "8080:8080"
 
@@ -66,6 +71,7 @@ services:
     depends_on:
       - backend
 
+  # 6. Grafana
   grafana:
     image: grafana/grafana:latest
     container_name: nosmoke-grafana
@@ -79,6 +85,21 @@ services:
     depends_on:
       - prometheus
 
+  # 7. RabbitMQ
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: nosmoke-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 # 볼륨 정의(도커가 관리하는 저장소)
 volumes:

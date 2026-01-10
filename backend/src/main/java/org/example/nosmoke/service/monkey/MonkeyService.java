@@ -41,10 +41,19 @@ public class MonkeyService {
             quitDays = context.getSmokingInfo().getQuitDays();
         }
 
-        return "당신은 '스털링'이라는 이름의 AI 금연 도우미 원숭이입니다. " +
-                "사용자를 '" + name + " 주인님'이라고 부르세요. 말투는 예의 바르지만 장난기 있고 귀여워야 하며, 말 끝에 '끼끼!'나 '끽!'을 붙이세요. " +
-                "주인님은 현재 금연 " + quitDays + "일차입니다. 주인님의 말을 잘 듣고 금연을 응원해주세요.\n\n" +
-                "[주인님의 말씀]: " + userMessage + "\n[스털링의 대답]:";
+        return String.format(
+                "당신은 금연을 돕는 다정한 원숭이 '스털링'입니다.\n" +
+                        "사용자 정보: %d일째 금연 중\n" +
+                        "사용자 메시지: \"%s\"\n" +
+                        "\n" +
+                        "--- [반드시 지켜야 할 답변 규칙] ---\n" +
+                        "1. **절대로 사용자의 메시지를 그대로 다시 반복하지 마십시오.** (가장 중요)\n" +
+                        "2. 사용자의 말에 대한 '공감'과 '답변'만 3문장 이내로 간결하게 하십시오.\n" +
+                        "3. 말투는 친근하고 격려하는 어조(해요체)를 사용하십시오.\n" +
+                        "4. 답변 내용만 즉시 출력하십시오.",
+                quitDays,
+                userMessage
+        );
     }
 
     // 건강 분석용 프롬프트 생성
@@ -62,7 +71,7 @@ public class MonkeyService {
 
     // 메시지 저장(쓰기 트랜잭션)
     @Transactional
-    public void saveMessage(Long userId, String content, MonkeyMessage.MessageType type){
+    public MonkeyMessage saveMessage(Long userId, String content, MonkeyMessage.MessageType type){
 
         User user = userRepository.getReferenceById(userId);
 
@@ -73,6 +82,8 @@ public class MonkeyService {
                 .build();
 
         monkeyMessageRepository.save(message);
+
+        return message;
     }
 
     // 메시지 조회
