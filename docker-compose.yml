@@ -66,6 +66,7 @@ services:
     depends_on:
       - backend
 
+  # 6. Grafana
   grafana:
     image: grafana/grafana:latest
     container_name: nosmoke-grafana
@@ -79,6 +80,21 @@ services:
     depends_on:
       - prometheus
 
+  # 7. RabiitMQ
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: nosmoke-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEAFULT_USER: guest
+      RABBITMQ_DEAFULT_PASS: guest
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 # 볼륨 정의(도커가 관리하는 저장소)
 volumes:
