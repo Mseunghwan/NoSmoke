@@ -12,6 +12,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -29,7 +30,12 @@ public class MonkeyFacade {
 
 
     // 채팅 기능
-    public String chatWithSterling(Long userId, String userMessage){
+    @Transactional
+    public String chatWithSterling(Long userId, String userMessage){ // 성능 개선해야
+
+        // 유저 메시지 DB에 저장
+        monkeyService.saveMessage(userId, userMessage, MonkeyMessage.MessageType.USER);
+
         MonkeyChatContextDto context = monkeyService.getChatContext(userId);
 
         String prompt = monkeyService.createPersonPrompt(context, userMessage);

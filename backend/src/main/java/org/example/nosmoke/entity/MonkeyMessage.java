@@ -34,7 +34,8 @@ public class MonkeyMessage extends BaseEntity {
 
     public enum MessageType {
         REACTIVE, // 사용자의 행동(대화, 설문)에 대한 반응 - 반응형
-        PROACTIVE // AI 펫이 먼저 말을 거는 경우 - 능동형
+        PROACTIVE, // AI 펫이 먼저 말을 거는 경우 - 능동형
+        USER // 사용자 메시지
     }
 
 }
