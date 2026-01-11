@@ -8,6 +8,7 @@ import org.example.nosmoke.dto.monkey.MonkeyChatContextDto;
 import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Slice;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
@@ -84,8 +85,8 @@ public class MonkeyFacade {
     }
 
     // 메세지 조회
-    public List<MonkeyMessage> findMessagesByUserId(Long userId) {
-        return monkeyService.findMessagesByUserId(userId);
+    public Slice<MonkeyMessage> findMessagesByUserId(Long userId, int page, int size) {
+        return monkeyService.findMessagesByUserId(userId, page, size);
     }
 
 }

@@ -5,6 +5,7 @@ import org.example.nosmoke.dto.ApiResponse;
 import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
 import org.example.nosmoke.service.monkey.MonkeyFacade;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,19 +41,21 @@ public class MonkeyController {
     }
 
     @GetMapping("/messages")
-    public ResponseEntity<ApiResponse<List<MonkeyMessageResponseDto>>> getMyMonkeyMessage(){
+    public ResponseEntity<ApiResponse<Slice<MonkeyMessageResponseDto>>> getMyMonkeyMessage(
+            @RequestParam(defaultValue = "0") int page, // 0 페이지부터 시작
+            @RequestParam(defaultValue = "20") int size // 한 번에 20개 메시지 로딩
+    ){
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String userId = authentication.getName();
 
-            List<MonkeyMessage> messages = monkeyFacade.findMessagesByUserId(Long.parseLong(userId));
+            Slice<MonkeyMessage> messageSlice = monkeyFacade.findMessagesByUserId(Long.parseLong(userId), page, size);
 
-            List<MonkeyMessageResponseDto> responseDtos = messages.stream()
-                    .map(MonkeyMessageResponseDto::new)
-                    .collect(Collectors.toList());
+            Slice<MonkeyMessageResponseDto> responseDtos = messageSlice
+                    .map(MonkeyMessageResponseDto::new);
 
-            ApiResponse<List<MonkeyMessageResponseDto>> response = ApiResponse.success(
-                    "원숭이 메시지 조회가 완료되었습니다.",
+            ApiResponse<Slice<MonkeyMessageResponseDto>> response = ApiResponse.success(
+                    "메시지 목록 조회 성공(Slice)",
                     responseDtos
             );
 

@@ -1,14 +1,16 @@
 package org.example.nosmoke.repository;
 
 import org.example.nosmoke.entity.MonkeyMessage;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public interface MonkeyMessageRepository extends JpaRepository<MonkeyMessage, Long> {
-    // monkey message가 가진 user 필드의 id를 조건으로 생성시간 기준 내림차순(최신순)으로 검색하겠다
-    List<MonkeyMessage> findByUser_IdOrderByCreatedAtDesc(Long userId);
+    // Slice로 반환
+    // 쿼리 실행 시 limit + 1개를 가져와서 다음 페이지 존재 여부만 체크한다(Count 쿼리가 안나간다)
+    Slice<MonkeyMessage> findByUser_IdOrderByCreatedAtDesc(Long userId, Pageable pageable) ;
 
 }
