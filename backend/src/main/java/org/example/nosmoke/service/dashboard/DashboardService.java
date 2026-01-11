@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.example.nosmoke.dto.dashboard.DashboardResponseDto;
+import org.example.nosmoke.dto.quitsurvey.QuitSurveyLightDto;
 import org.example.nosmoke.entity.QuitSurvey;
 import org.example.nosmoke.entity.SmokingInfo;
 import org.example.nosmoke.entity.User;
@@ -40,7 +41,10 @@ public class DashboardService {
         SmokingInfo smokingInfo = smokingInfoRepository.findByUserId(userId)
                 .orElse(null); // 흡연 정보 기 미등록 시 null 허용해야
 
-        List<QuitSurvey> surveys = quitSurveyRepository.findByUserId(userId);
+        // DTO 조회로 변경
+        // DB에서 10만개 데이터를 가져와도, 텍스트 필드가 빠져 메모리 사용량 줄어듦
+        // 또한 DB에서 정렬되어 오기에 CPU save 가능
+        List<QuitSurveyLightDto> surveys = quitSurveyRepository.findAllLightByUserId(userId);
 
         // 기본 정보 계산
         long quitDays = 0;
@@ -66,10 +70,10 @@ public class DashboardService {
         int currentStreak = 0;
         int longestStreak = 0;
 
-        // survey를 날짜순 정렬, 가져와서 isSuccess가 얼마나 유지되는지 확인해보자
-        surveys.sort((s1, s2) -> s1.getCreatedAt().compareTo(s2.getCreatedAt()));
+        // 이미 정렬되어 받아오기에 주석 처리
+//        surveys.sort((s1, s2) -> s1.getCreatedAt().compareTo(s2.getCreatedAt()));
 
-        for (QuitSurvey survey : surveys) {
+        for (QuitSurveyLightDto survey : surveys) {
             if(survey.isSuccess()){
                 currentStreak++;
             } else {
