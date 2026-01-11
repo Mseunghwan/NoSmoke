@@ -30,12 +30,12 @@ public class MonkeyFacade {
 
 
     // 채팅 기능
-    @Transactional
     public String chatWithSterling(Long userId, String userMessage){ // 성능 개선해야
 
         // 유저 메시지 DB에 저장
         monkeyService.saveMessage(userId, userMessage, MonkeyMessage.MessageType.USER);
 
+        // DB 에서 채팅 조회
         MonkeyChatContextDto context = monkeyService.getChatContext(userId);
 
         String prompt = monkeyService.createPersonPrompt(context, userMessage);
