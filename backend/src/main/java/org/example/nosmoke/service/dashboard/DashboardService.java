@@ -5,16 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.example.nosmoke.dto.dashboard.DashboardResponseDto;
 import org.example.nosmoke.dto.quitsurvey.QuitSurveyLightDto;
-import org.example.nosmoke.entity.QuitSurvey;
 import org.example.nosmoke.entity.SmokingInfo;
 import org.example.nosmoke.entity.User;
 import org.example.nosmoke.repository.QuitSurveyRepository;
 import org.example.nosmoke.repository.SmokingInfoRepository;
 import org.example.nosmoke.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +34,8 @@ public class DashboardService {
     private static final int CIGARETTES_PER_PACK = 20;
     private static final int PRICE_PER_PACK = 4500;
 
+    private static final int MAX_TRACKING_DAYS = 365;
+
     public DashboardResponseDto getDashboardInfo(Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -42,9 +44,11 @@ public class DashboardService {
                 .orElse(null); // 흡연 정보 기 미등록 시 null 허용해야
 
         // DTO 조회로 변경
-        // DB에서 10만개 데이터를 가져와도, 텍스트 필드가 빠져 메모리 사용량 줄어듦
-        // 또한 DB에서 정렬되어 오기에 CPU save 가능
-        List<QuitSurveyLightDto> surveys = quitSurveyRepository.findAllLightByUserId(userId);
+        // 최신 365개 치만 DB에서 가져온다(금연 유무)
+        List<QuitSurveyLightDto> surveys = quitSurveyRepository.findAllLightByUserId(
+                userId,
+                PageRequest.of(0, MAX_TRACKING_DAYS)
+        );
 
         // 기본 정보 계산
         long quitDays = 0;
@@ -73,14 +77,14 @@ public class DashboardService {
         // 이미 정렬되어 받아오기에 주석 처리
 //        surveys.sort((s1, s2) -> s1.getCreatedAt().compareTo(s2.getCreatedAt()));
 
+
+        // 스트릭 계산 로직 변경
+        // 최신 데이터 부터 역순으로 검사하다가 실패가 나오면 즉시 중단 --> 성공, 성공, 실패 면 2일 금연한거
         for (QuitSurveyLightDto survey : surveys) {
             if(survey.isSuccess()){
                 currentStreak++;
             } else {
-                if (currentStreak > longestStreak) {
-                longestStreak = currentStreak;
-                }
-                currentStreak = 0;
+                break;
             }
         }
         if (currentStreak > longestStreak) {
