@@ -8,6 +8,9 @@ import org.example.nosmoke.entity.User;
 import org.example.nosmoke.repository.MonkeyMessageRepository;
 import org.example.nosmoke.repository.SmokingInfoRepository;
 import org.example.nosmoke.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,8 +90,10 @@ public class MonkeyService {
     }
 
     // 메시지 조회
-    public List<MonkeyMessage> findMessagesByUserId(Long userId) {
-        return monkeyMessageRepository.findByUser_IdOrderByCreatedAtDesc(userId);
+    public Slice<MonkeyMessage> findMessagesByUserId(Long userId, int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+
+        return monkeyMessageRepository.findByUser_IdOrderByCreatedAtDesc(userId, pageable);
     }
 
 }

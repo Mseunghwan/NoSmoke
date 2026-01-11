@@ -8,9 +8,11 @@ import org.example.nosmoke.dto.monkey.MonkeyChatContextDto;
 import org.example.nosmoke.dto.monkey.MonkeyMessageResponseDto;
 import org.example.nosmoke.entity.MonkeyMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Slice;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -28,7 +30,12 @@ public class MonkeyFacade {
 
 
     // 채팅 기능
-    public String chatWithSterling(Long userId, String userMessage){
+    public String chatWithSterling(Long userId, String userMessage){ // 성능 개선해야
+
+        // 유저 메시지 DB에 저장
+        monkeyService.saveMessage(userId, userMessage, MonkeyMessage.MessageType.USER);
+
+        // DB 에서 채팅 조회
         MonkeyChatContextDto context = monkeyService.getChatContext(userId);
 
         String prompt = monkeyService.createPersonPrompt(context, userMessage);
@@ -84,8 +91,8 @@ public class MonkeyFacade {
     }
 
     // 메세지 조회
-    public List<MonkeyMessage> findMessagesByUserId(Long userId) {
-        return monkeyService.findMessagesByUserId(userId);
+    public Slice<MonkeyMessage> findMessagesByUserId(Long userId, int page, int size) {
+        return monkeyService.findMessagesByUserId(userId, page, size);
     }
 
 }
