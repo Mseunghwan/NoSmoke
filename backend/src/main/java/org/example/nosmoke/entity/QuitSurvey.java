@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name="quit_survey")
 public class QuitSurvey extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
