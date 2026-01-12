@@ -71,7 +71,7 @@ public class UserController {
 
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<TokenDto>> reissue(
-            @RequestHeader("Authoriation") String accessToken,
+            @RequestHeader("Authoriaztion") String accessToken,
             @RequestHeader("RefreshToken") String refreshToken
     ){
         // Bearer 제거
@@ -89,7 +89,7 @@ public class UserController {
     // 로그아웃 API
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<String>> logout(
-            @RequestHeader("Authoriation") String accessToken
+            @RequestHeader("Authorization") String accessToken
     ){
         String resolvedAccessToken = resolveToken(accessToken);
 
