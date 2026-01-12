@@ -106,4 +106,9 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    public long getRefreshTokenValidTime() {
+        return this.refreshTokenValidTime;
+    }
+
 }

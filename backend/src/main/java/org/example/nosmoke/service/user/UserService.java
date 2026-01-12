@@ -2,13 +2,18 @@ package org.example.nosmoke.service.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.nosmoke.dto.token.TokenDto;
 import org.example.nosmoke.dto.user.*;
 import org.example.nosmoke.entity.User;
 import org.example.nosmoke.repository.UserRepository;
 import org.example.nosmoke.util.JwtTokenProvider;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     // 회원가입
     @Transactional
@@ -62,17 +68,81 @@ public class UserService {
         }
 
         // 3. JWT 토큰 생성(아직 JWT 구현 안했으므로 temp_token으로 임시처리)
-        String token = jwtTokenProvider.createToken(user.getId().toString(), user.getEmail());
+        TokenDto tokenDto = jwtTokenProvider.createTokenDto(user.getId().toString(), user.getEmail());
+
+        // 4. Redis에 Refresh Token 저장
+        long refreshTokenValidTime = jwtTokenProvider.getRefreshTokenValidTime();
+
+        redisTemplate.opsForValue()
+                .set("RT:" + user.getEmail(), tokenDto.getRefreshToken(), refreshTokenValidTime);
 
         // 4. ResponseDto 생성
         return new UserLoginResponseDto(
-                token,
+                tokenDto.getAccessToken(),
+                tokenDto.getRefreshToken(),
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getPoint()
         );
 
+    }
+
+    // 토큰 재발급
+    @Transactional
+    public TokenDto reissue(String accessToekn, String refreshToken){
+
+        // Refresh Token 검증
+        if(!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new IllegalArgumentException("Refresh Token이 만료되었거나 유효하지 않습니다.");
+        }
+
+        // Access Token에서 userID 가져오기
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToekn);
+
+        // Redis에서 User Email을 기반으로 저장된 Refresh Token 값을 가져옴
+        String userPk = jwtTokenProvider.getUserPk(accessToekn);
+        User user = userRepository.getByIdOrThrow(Long.parseLong(userPk));
+
+        String redisRefreshToken = (String) redisTemplate.opsForValue().get("RT:" + user.getEmail());
+
+        // Redis의 Refresh Token과 클라이언트가 보낸 토큰 일치 여부 확인
+        if(!refreshToken.equals(redisRefreshToken)) {
+            throw new IllegalArgumentException("토큰 정보가 일치하지 않습니다"); // 탈취 가능성?
+        }
+
+        // 새로운 토큰 생성 및 Redis 업데이트
+        TokenDto tokenDto = jwtTokenProvider.createTokenDto(userPk, user.getEmail());
+
+        long refreshToeknExpiration = jwtTokenProvider.getRefreshTokenValidTime();
+        redisTemplate.opsForValue()
+                .set("RT:" + user.getEmail(), tokenDto.getRefreshToken(), refreshToeknExpiration);
+
+        return tokenDto;
+    }
+
+    // 로그아웃
+    @Transactional
+    public void logout(String accessToken) {
+        // Access Token 유효성 검증
+        if(!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+
+        // Access Token에서 User 정보 가져오기
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+        String userPk = jwtTokenProvider.getUserPk(accessToken);
+        User user = userRepository.getByIdOrThrow(Long.parseLong(userPk));
+
+        // Redis 에서 Refresh Token 삭제
+        if(redisTemplate.opsForValue().get("RT:" + user.getEmail()) != null) {
+            redisTemplate.delete("RT:" + user.getEmail());
+        }
+
+        // Access Token 블랙리스트 등록(남은 유효기간 만큼)
+        Long expiration = jwtTokenProvider.getExpiration(accessToken);
+        redisTemplate.opsForValue()
+                .set(accessToken, "logout");
     }
 
     // 사용자 프로필 조회
