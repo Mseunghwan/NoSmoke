@@ -101,8 +101,20 @@ services:
       timeout: 5s
       retries: 5
 
+
+  # Redis
+  redis :
+    image : reids:alpine
+    container_name: nosmoke-redis
+    ports:
+      - "6739:6739"
+    command: redis-server --requirepass guest(비밀번호 설정)
+    volumes:
+      - redis_data:/data
+
 # 볼륨 정의(도커가 관리하는 저장소)
 volumes:
   db_data:
   prometheus_data:
   grafana_data:
+  redis_data:
