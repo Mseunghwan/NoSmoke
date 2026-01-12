@@ -3,6 +3,7 @@ package org.example.nosmoke.controller.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.nosmoke.dto.ApiResponse;
+import org.example.nosmoke.dto.token.TokenDto;
 import org.example.nosmoke.dto.user.*;
 import org.example.nosmoke.service.user.UserService;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,46 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<TokenDto>> reissue(
+            @RequestHeader("Authoriation") String accessToken,
+            @RequestHeader("RefreshToken") String refreshToken
+    ){
+        // Bearer 제거
+        String resolvedAccessToken = resolveToken(accessToken);
+
+        try{
+            TokenDto tokenDto = userService.reissue(resolvedAccessToken, refreshToken);
+            return ResponseEntity.ok(ApiResponse.success("토큰 재발급 완료", tokenDto));
+        } catch(IllegalArgumentException e ){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("REISSUE_FAILED", e.getMessage()));
+        }
+    }
+
+    // 로그아웃 API
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<String>> logout(
+            @RequestHeader("Authoriation") String accessToken
+    ){
+        String resolvedAccessToken = resolveToken(accessToken);
+
+        try{
+            userService.logout(resolvedAccessToken);
+            return ResponseEntity.ok(ApiResponse.success("로그아웃 완료", "LOGOUT_SUCCESS"));
+        } catch(IllegalArgumentException e ){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                  .body(ApiResponse.error("LOGOUT_FAILED", e.getMessage()));
+        }
+    }
+
+    private String resolveToken(String bearerToken) {
+        if(bearerToken.startsWith("Bearer ")) {
+           return bearerToken.substring(7);
+        }
+        return bearerToken;
     }
 
     // 사용자 프로필 조회
