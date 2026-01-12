@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.example.nosmoke.dto.token.TokenDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,8 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secretKey;
     private Key key;
-    private final long tokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분
+    private final long accessTokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분
+    private final long refreshTokenValidTime = 14 * 24 * 60 * 60 * 1000L; // 리프레시 토큰 2주 유지
 
     // UserDetailsService 주입 --> UserDetails? SpringSecurity 에서 사용자의 정보를 담는 인터페이스
     // 사용자 정보 불러오기 위해 구현해야하는 인터페이스
@@ -37,18 +39,40 @@ public class JwtTokenProvider {
         key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    //JWT 토큰 생성
-    public String createToken(String userPk, String email) {
+    //JWT 토큰 생성 -> Access + Refresh 토큰 둘 다 발급
+    public TokenDto createTokenDto(String userPk, String email) {
         Claims claims = Jwts.claims().setSubject(userPk); // JWT payload에 저장되는 정보단위
         claims.put("email", email); // 정보는 key / value 단위로 저장된다, 즉 "email" = emai 값
         Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims) // 정보 저장
-                .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
-                .signWith(key, SignatureAlgorithm.HS256) // 사용할 암호화 알고리즘과 signature에 들어갈 secret 값 세팅
+
+        // 1. Access Token 생성
+        String accessToken = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + accessTokenValidTime))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
+        // 2. Refresh Token 생성
+        String refrestToken = Jwts.builder()
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        return TokenDto.builder()
+                .grantType("Bearer")
+                .accessToken(accessToken)
+                .refreshToken(refrestToken)
+                .accessTokenExpiresIn(now.getTime() + accessTokenValidTime)
+                .build();
+    }
+
+    // 토큰 남은 유효시간(TTL) 계산 - 로그아웃 시 BlackList 저장하기 위함
+    public long getExpiration(String accessToken) {
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(accessToken).getBody().getExpiration();
+        long now = new Date().getTime();
+        return expiration.getTime() - now;
     }
 
     // 1. 토큰에서 인증 정보 조회

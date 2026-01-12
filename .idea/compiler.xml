@@ -11,9 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="org.example.NoSmoke" target="21" />
       <module name="org.example.NoSmoke.main" target="21" />
-      <module name="org.example.NoSmoke.test" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
