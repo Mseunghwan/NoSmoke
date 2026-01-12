@@ -17,7 +17,7 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    @Value("$spring.data.redis.password}")
+    @Value("${spring.data.redis.password}")
     private String password;
 
     @Bean
@@ -30,15 +30,15 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(){
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        redisTemplate().setConnectionFactory(redisConnectionFactory());
+        template.setConnectionFactory(redisConnectionFactory());
 
         // 일반적인 Key:Value의 경우 String으로 직렬화(안하면 깨진 문자)
-        redisTemplate().setKeySerializer(new StringRedisSerializer());
-        redisTemplate().setValueSerializer(new StringRedisSerializer());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
 
         // Hash Operation 사용 시
-        redisTemplate().setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate().setHashValueSerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
 
         return template;
     }

@@ -46,32 +46,40 @@ public class UserController {
     }
 
     // 로그인
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserLoginResponseDto>> login(
             @Valid @RequestBody UserLoginRequestDto requestDto) {
 
-        try{
+        try {
             UserLoginResponseDto responseDto = userService.login(requestDto);
             ApiResponse<UserLoginResponseDto> response = ApiResponse.success(
                     "로그인이 완료되었습니다",
                     responseDto
             );
-
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
-        } catch (IllegalArgumentException e ){
+        } catch (IllegalArgumentException e) {
             ApiResponse<UserLoginResponseDto> response = ApiResponse.error(
                     "LOGIN_ERROR",
                     e.getMessage()
             );
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+        } catch (Exception e) {
+            // [추가] Redis 연결 실패 등 예상치 못한 시스템 에러 처리
+            e.printStackTrace(); // 서버 로그에 상세 에러 출력
+            ApiResponse<UserLoginResponseDto> response = ApiResponse.error(
+                    "SYSTEM_ERROR",
+                    "시스템 오류가 발생했습니다: " + e.getMessage()
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<TokenDto>> reissue(
-            @RequestHeader("Authoriaztion") String accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @RequestHeader("RefreshToken") String refreshToken
     ){
         // Bearer 제거
