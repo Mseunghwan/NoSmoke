@@ -12,4 +12,5 @@ public class UserLoginResponseDto {
     private final String name;
     private final String email;
     private final int point;
+    private final boolean hasSmokingInfo;
 }

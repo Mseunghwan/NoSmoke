@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.nosmoke.dto.token.TokenDto;
 import org.example.nosmoke.dto.user.*;
 import org.example.nosmoke.entity.User;
+import org.example.nosmoke.repository.SmokingInfoRepository;
 import org.example.nosmoke.repository.UserRepository;
 import org.example.nosmoke.util.JwtTokenProvider;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +24,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final SmokingInfoRepository smokingInfoRepository;
 
     // 회원가입
     @Transactional
@@ -76,6 +78,8 @@ public class UserService {
         redisTemplate.opsForValue()
                 .set("RT:" + user.getEmail(), tokenDto.getRefreshToken(), refreshTokenValidTime, TimeUnit.MILLISECONDS);
 
+        // 유저 흡연 정보 등록되어 있는지 확인
+        boolean hasSmokingInfo = smokingInfoRepository.findByUserId(user.getId()).isPresent();
 
         // 4. ResponseDto 생성
         return new UserLoginResponseDto(
@@ -84,7 +88,8 @@ public class UserService {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPoint()
+                user.getPoint(),
+                hasSmokingInfo
         );
 
     }

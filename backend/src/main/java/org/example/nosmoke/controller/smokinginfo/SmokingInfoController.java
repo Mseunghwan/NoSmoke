@@ -72,5 +72,20 @@ public class SmokingInfoController{
         }
     }
 
+    @GetMapping
+    public ResponseEntity<ApiResponse<SmokingInfoResponseDto>> getSmokingInfo(){
+        try{
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+        SmokingInfo smokingInfo = smokingInfoService.getSmokingInfo(Long.valueOf(userId));
+        SmokingInfoResponseDto responseDto = new SmokingInfoResponseDto(smokingInfo);
+
+        return ResponseEntity.ok(ApiResponse.success("흡연 정보 조회 완료", responseDto));
+
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("NOT_FOUND", e.getMessage()));}
+    }
+
 
 }
