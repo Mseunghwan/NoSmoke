@@ -18,11 +18,17 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
+
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: guest
+
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: guest
@@ -101,8 +107,20 @@ services:
       timeout: 5s
       retries: 5
 
+
+  # 8. Redis
+  redis :
+    image : redis:alpine
+    container_name: nosmoke-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass", "guest"]
+    volumes:
+      - redis_data:/data
+
 # 볼륨 정의(도커가 관리하는 저장소)
 volumes:
   db_data:
   prometheus_data:
   grafana_data:
+  redis_data:

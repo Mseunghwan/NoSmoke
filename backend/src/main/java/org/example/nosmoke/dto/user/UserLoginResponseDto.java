@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UserLoginResponseDto {
-    private final String token;
+    private final String accessToken;
+    private final String refreshToken;
     private final Long id;
     private final String name;
     private final String email;
     private final int point;
+    private final boolean hasSmokingInfo;
 }

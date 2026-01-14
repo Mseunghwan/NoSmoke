@@ -20,6 +20,12 @@ public class SmokingInfoService {
     private final SmokingInfoRepository smokingInfoRepository;
     private final UserRepository userRepository;
 
+    // 흡연 정보 조회
+    public SmokingInfo getSmokingInfo(Long userId) {
+        return smokingInfoRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("흡연 정보를 찾을 수 없습니다."));
+    }
+
     // 흡연 정보 저장
     @Transactional
     public SmokingInfo smokingInfoSave(Long userId, SmokingInfoRequestDto requestDto) {
