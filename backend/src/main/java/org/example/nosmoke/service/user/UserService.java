@@ -74,7 +74,8 @@ public class UserService {
         long refreshTokenValidTime = jwtTokenProvider.getRefreshTokenValidTime();
 
         redisTemplate.opsForValue()
-                .set("RT:" + user.getEmail(), tokenDto.getRefreshToken(), refreshTokenValidTime);
+                .set("RT:" + user.getEmail(), tokenDto.getRefreshToken(), refreshTokenValidTime, TimeUnit.MILLISECONDS);
+
 
         // 4. ResponseDto 생성
         return new UserLoginResponseDto(
