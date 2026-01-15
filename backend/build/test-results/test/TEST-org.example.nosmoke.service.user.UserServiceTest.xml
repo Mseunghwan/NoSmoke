@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.example.nosmoke.service.user.UserServiceTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-01-15T14:46:26.654Z" hostname="minseunghwan-ui-MacBookPro.local" time="0.645">
+<testsuite name="org.example.nosmoke.service.user.UserServiceTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-01-15T15:02:34.886Z" hostname="minseunghwan-ui-MacBookPro.local" time="0.678">
   <properties/>
-  <testcase name="로그인 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.609"/>
-  <testcase name="비밀번호 변경 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
-  <testcase name="비밀번호 변경 실패 - 현재 비밀번호 불일치" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.004"/>
-  <testcase name="닉네임 변경 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.006"/>
-  <testcase name="비밀번호 변경 실패 - 새 비밀번호와 확인 비밀번호 불일치" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.004"/>
+  <testcase name="로그인 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.62"/>
+  <testcase name="비밀번호 변경 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.007"/>
+  <testcase name="로그아웃 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.005"/>
+  <testcase name="비밀번호 변경 실패 - 현재 비밀번호 불일치" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.005"/>
+  <testcase name="토큰 재발급 실패 - Refresh Token 불일치 (탈취 의심)" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.005"/>
+  <testcase name="닉네임 변경 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.007"/>
+  <testcase name="비밀번호 변경 실패 - 새 비밀번호와 확인 비밀번호 불일치" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
+  <testcase name="토큰 재발급 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.005"/>
   <testcase name="로그인 실패 - 비밀번호 불일치" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
-  <testcase name="회원가입 실패 - 이메일 중복" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
-  <testcase name="로그인 실패 - 존재하지 않는 이메일" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.002"/>
-  <testcase name="닉네임 변경 실패 - 이미 존재하는 닉네임" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.002"/>
-  <testcase name="회원가입 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
+  <testcase name="회원가입 실패 - 이메일 중복" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.004"/>
+  <testcase name="로그인 실패 - 존재하지 않는 이메일" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.003"/>
+  <testcase name="닉네임 변경 실패 - 이미 존재하는 닉네임" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.001"/>
+  <testcase name="회원가입 성공" classname="org.example.nosmoke.service.user.UserServiceTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
 WARNING: A Java agent has been loaded dynamically (/Users/minseunghwan/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.6/17b32fd9f57deef02842f7f05abc4ad8127fe34e/byte-buddy-agent-1.17.6.jar)

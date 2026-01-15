@@ -269,4 +269,102 @@ public class UserServiceTest {
                 .hasMessage("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
     }
 
+
+    // 5. 토큰 재발급 테스트
+    @Test
+    @DisplayName("토큰 재발급 성공")
+    void 토큰_재발급_성공() {
+        // given
+        String accessToken = "oldAccessToken";
+        String refreshToken = "validRefreshToken";
+        String userId = "1";
+        String email = "test@email.com";
+
+        User user = new User("홍길동", email, "pw", 0);
+
+        // Refresh Token 유효성 검증 통과
+        given(jwtTokenProvider.validateToken(refreshToken)).willReturn(true);
+
+        // Access Token에서 userPk(ID) 추출
+        given(jwtTokenProvider.getUserPk(accessToken)).willReturn(userId);
+
+        // 유저 조회
+        given(userRepository.getByIdOrThrow(Long.parseLong(userId))).willReturn(user);
+
+        // Redis에서 저장된 Refresh Token 가져오기
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
+        given(valueOperations.get("RT:" + email)).willReturn(refreshToken); // Redis와 입력값 일치
+
+        // 새 토큰 생성
+        TokenDto newToken = TokenDto.builder().accessToken("newAccess").refreshToken("newRefresh").build();
+        given(jwtTokenProvider.createTokenDto(userId, email)).willReturn(newToken);
+
+        // when
+        TokenDto result = userService.reissue(accessToken, refreshToken);
+
+        // then
+        assertThat(result.getAccessToken()).isEqualTo("newAccess");
+        assertThat(result.getRefreshToken()).isEqualTo("newRefresh");
+
+        // Redis에 새 토큰이 업데이트되었는지 확인
+        verify(valueOperations).set(eq("RT:" + email), eq("newRefresh"), anyLong());
+    }
+
+    @Test
+    @DisplayName("토큰 재발급 실패 - Refresh Token 불일치 (탈취 의심)")
+    void 토큰_재발급_실패_토큰_불일치() {
+        // given
+        String accessToken = "access";
+        String refreshToken = "inputRefresh";
+        String userId = "1";
+        User user = new User("홍길동", "test@email.com", "pw", 0);
+
+        given(jwtTokenProvider.validateToken(refreshToken)).willReturn(true);
+        given(jwtTokenProvider.getUserPk(accessToken)).willReturn(userId);
+        given(userRepository.getByIdOrThrow(Long.parseLong(userId))).willReturn(user);
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
+
+        // Redis에는 다른 토큰이 저장되어 있다고 가정
+        given(valueOperations.get("RT:test@email.com")).willReturn("differentRefresh");
+
+        // when & then
+        assertThatThrownBy(() -> userService.reissue(accessToken, refreshToken))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("토큰 정보가 일치하지 않습니다");
+    }
+
+    // 6. 로그아웃 테스트
+
+    @Test
+    @DisplayName("로그아웃 성공")
+    void 로그아웃_성공() {
+        // given
+        String accessToken = "validAccessToken";
+        String userId = "1";
+        User user = new User("홍길동", "test@email.com", "pw", 0);
+
+        // 토큰 유효성 검증
+        given(jwtTokenProvider.validateToken(accessToken)).willReturn(true);
+
+        // 유저 정보 가져오기
+        given(jwtTokenProvider.getUserPk(accessToken)).willReturn(userId);
+        given(userRepository.getByIdOrThrow(Long.parseLong(userId))).willReturn(user);
+
+        // Redis 작업 준비
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
+
+        // Redis에 RT가 있다고 가정 (삭제 대상)
+        given(valueOperations.get("RT:" + user.getEmail())).willReturn("refreshToken");
+
+        // when
+        userService.logout(accessToken);
+
+        // then
+        // Redis에서 RT 삭제되었는지 검증
+        verify(redisTemplate).delete("RT:" + user.getEmail());
+
+        // Access Token이 블랙리스트("logout")로 등록되었는지 검증
+        verify(valueOperations).set(eq(accessToken), eq("logout"));
+    }
+
 }
