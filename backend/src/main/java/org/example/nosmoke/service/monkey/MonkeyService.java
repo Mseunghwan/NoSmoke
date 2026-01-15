@@ -46,6 +46,7 @@ public class MonkeyService {
 
         return String.format(
                 "당신은 금연을 돕는 다정한 원숭이 '스털링'입니다.\n" +
+                        "사용자 이름: %s\n" +
                         "사용자 정보: %d일째 금연 중\n" +
                         "사용자 메시지: \"%s\"\n" +
                         "\n" +
@@ -54,6 +55,7 @@ public class MonkeyService {
                         "2. 사용자의 말에 대한 '공감'과 '답변'만 3문장 이내로 간결하게 하십시오.\n" +
                         "3. 말투는 친근하고 격려하는 어조(해요체)를 사용하십시오.\n" +
                         "4. 답변 내용만 즉시 출력하십시오.",
+                name,
                 quitDays,
                 userMessage
         );
