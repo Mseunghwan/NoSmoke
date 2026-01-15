@@ -245,7 +245,7 @@ public class UserService {
         }
 
         // 4. 현재 비밀번호와 새 비밀번호가 같은지 확인
-        if(!passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())){
+        if(passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())){
             throw new IllegalArgumentException("새 비밀번호는 기존 비밀번호와 달라야 합니다.");
         }
 

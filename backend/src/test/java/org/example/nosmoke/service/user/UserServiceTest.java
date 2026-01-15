@@ -1,10 +1,7 @@
 package org.example.nosmoke.service.user;
 
 import org.example.nosmoke.dto.token.TokenDto;
-import org.example.nosmoke.dto.user.UserLoginRequestDto;
-import org.example.nosmoke.dto.user.UserLoginResponseDto;
-import org.example.nosmoke.dto.user.UserSignupRequestDto;
-import org.example.nosmoke.dto.user.UserSignupResponseDto;
+import org.example.nosmoke.dto.user.*;
 import org.example.nosmoke.entity.User;
 import org.example.nosmoke.repository.SmokingInfoRepository;
 import org.example.nosmoke.repository.UserRepository;
@@ -42,6 +39,8 @@ public class UserServiceTest {
     @Mock private RedisTemplate<String, Object> redisTemplate;
     @Mock private ValueOperations<String, Object> valueOperations;
 
+
+    // 1. 회원가입 테스트
 
     @Test
     @DisplayName("회원가입 성공")
@@ -87,7 +86,7 @@ public class UserServiceTest {
                 .hasMessage("이미 가입된 이메일 입니다.");
     }
 
-    // 로그인 테스트
+    // 2. 로그인 테스트
 
     @Test
     @DisplayName("로그인 성공")
@@ -150,6 +149,124 @@ public class UserServiceTest {
                 .hasMessage("비밀번호가 틀렸습니다.");
     }
 
+    // 3. 사용자 이름 수정 테스트
 
+    @Test
+    @DisplayName("닉네임 변경 성공")
+    void 닉네임_변경_성공(){
+        // given
+        Long userId = 1L;
+
+        UserNameUpdateRequestDto request = new UserNameUpdateRequestDto("새로운이름");
+
+        User user = new User("기존이름", "test@email.com", "pw", 0){
+            @Override public Long getId() { return 1L; }
+        };
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        // 중복된 이름이 없다고 가정
+        given(userRepository.existsByName("새로운이름")).willReturn(false);
+        // save 호출 시 입력된 user 그대로 반환
+        given(userRepository.save(any(User.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        UserUpdateResponseDto response = userService.updateNameProfile(userId, request);
+
+        // then
+        assertThat(response.getName()).isEqualTo("새로운이름");
+        // 실제로 이름이 바뀌었는지 객체 상태 확인
+        assertThat(user.getName()).isEqualTo("새로운이름");
+
+    }
+
+    @Test
+    @DisplayName("닉네임 변경 실패 - 이미 존재하는 닉네임")
+    void 닉네임_변경_실패_중복(){
+        // given
+        Long userId = 1L;
+        UserNameUpdateRequestDto request = new UserNameUpdateRequestDto("중복이름");
+
+        User user = new User("기존이름", "test@email.com", "pw", 0);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        // 중복이름은 이미 DB에 있다고 가정
+        given(userRepository.existsByName("중복이름")).willReturn(true);
+
+        // when & then
+        assertThatThrownBy(() -> userService.updateNameProfile(userId, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("이미 사용중인 사용자명입니다.");
+
+    }
+
+    // 4. 비밀번호 변경 테스트
+    @Test
+    @DisplayName("비밀번호 변경 성공")
+    void 비밀번호_변경_성공() {
+        // given
+        Long userId = 1L;
+
+        PasswordUpdateRequestDto request = new PasswordUpdateRequestDto("oldPw", "newPw", "newPw");
+
+        // DB에 저장된 유저는 암호화된 비밀번호("encodedOldPw")를 가지고 있음
+        User user = new User("홍길동", "test@email.com", "encodedOldPw", 0);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        // 1. 현재 비밀번호 검증 통과 (입력한 oldPw 와 DB의 encodedOldPw 가 일치한다고 가정)
+        given(passwordEncoder.matches("oldPw", "encodedOldPw")).willReturn(true);
+        // 2. 기존 비밀번호와 달라야 함 (새 비번 newPw 가 기존 encodedOldPw 와 다르다고 가정)
+        given(passwordEncoder.matches("newPw", "encodedOldPw")).willReturn(false);
+        // 3. 새 비밀번호 암호화 수행
+        given(passwordEncoder.encode("newPw")).willReturn("encodedNewPw");
+
+        // when
+        userService.updatePassword(userId, request);
+
+        // then
+        // 유저 객체의 비밀번호가 암호화된 새 비밀번호로 바뀌었는지 확인
+        assertThat(user.getPassword()).isEqualTo("encodedNewPw");
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 실패 - 현재 비밀번호 불일치")
+    void 비밀번호_변경_실패_현재비번_틀림() {
+        // given
+        Long userId = 1L;
+        // 틀린 비밀번호 "wrongPw" 입력
+        PasswordUpdateRequestDto request = new PasswordUpdateRequestDto("wrongPw", "newPw", "newPw");
+
+        User user = new User("홍길동", "test@email.com", "encodedOldPw", 0);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        // 비밀번호 불일치 가정 (false)
+        given(passwordEncoder.matches("wrongPw", "encodedOldPw")).willReturn(false);
+
+        // when & then
+        assertThatThrownBy(() -> userService.updatePassword(userId, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("현재 비밀번호가 일치하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 실패 - 새 비밀번호와 확인 비밀번호 불일치")
+    void 비밀번호_변경_실패_확인비번_불일치() {
+        // given
+        Long userId = 1L;
+        // 새비번("newPw") != 확인비번("differentPw")
+        PasswordUpdateRequestDto request = new PasswordUpdateRequestDto("oldPw", "newPw", "differentPw");
+
+        User user = new User("홍길동", "test@email.com", "encodedOldPw", 0);
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        // 현재 비밀번호는 맞다고 통과시킴
+        given(passwordEncoder.matches("oldPw", "encodedOldPw")).willReturn(true);
+
+        // when & then
+        assertThatThrownBy(() -> userService.updatePassword(userId, request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+    }
 
 }
