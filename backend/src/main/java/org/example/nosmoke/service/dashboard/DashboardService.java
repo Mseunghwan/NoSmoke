@@ -60,7 +60,7 @@ public class DashboardService {
         }
 
         log.info("=====================================");
-        log.info(">>> [INFO] 금연 시작일: " + smokingInfo.getQuitStartDate());
+        log.info(">>> [INFO] 금연 시작일: " + (smokingInfo != null? smokingInfo.getQuitStartDate() : "없음"));
         log.info(">>> [INFO] 오늘 날짜: " + LocalDate.now());
         log.info(">>> [INFO] 금연 일수: " + quitDays);
         log.info("=====================================");
