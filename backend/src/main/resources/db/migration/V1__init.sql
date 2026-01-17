@@ -33,7 +33,7 @@ CREATE TABLE smoking_info (
 CREATE TABLE quit_survey (
                              id BIGINT AUTO_INCREMENT PRIMARY KEY,
                              user_id BIGINT NOT NULL,
-                             is_success BIT(1),      -- boolean 타입 매핑
+                             is_success BOOLEAN,
                              stress_level INT,
                              stress_cause VARCHAR(255),
                              craving_level INT,
