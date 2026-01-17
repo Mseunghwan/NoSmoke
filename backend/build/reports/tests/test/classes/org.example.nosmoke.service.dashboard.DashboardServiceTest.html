@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - DashboardServiceTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>DashboardServiceTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/org.example.nosmoke.service.dashboard.html">org.example.nosmoke.service.dashboard</a> &gt; DashboardServiceTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.141s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">대시보드 조회 성공 - 모든 데이터가 있을 때</td>
+<td class="success">대시보드_조회_성공()</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">대시보드 조회 실패 - 존재하지 않는 유저</td>
+<td class="success">대시보드_조회_실패_유저없음()</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">대시보드 조회 - 흡연 정보가 없을 때 (초기 상태)</td>
+<td class="success">대시보드_조회_흡연정보_없음()</td>
+<td class="success">0.137s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2026-01-16T00:37:29.946+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : =====================================
+2026-01-16T00:37:29.946+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 금연 시작일: 없음
+2026-01-16T00:37:29.946+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 오늘 날짜: 2026-01-16
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 금연 일수: 0
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : =====================================
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 참지 않은 담배 개수: 0
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 한 갑당 가격: 4500
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 한 갑당 개비 수: 20
+2026-01-16T00:37:29.947+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 계산된 절약 금액: 0
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : =====================================
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 금연 시작일: 2026-01-06
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 오늘 날짜: 2026-01-16
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 금연 일수: 10
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : =====================================
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 참지 않은 담배 개수: 100
+2026-01-16T00:37:29.970+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 한 갑당 가격: 4500
+2026-01-16T00:37:29.971+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 한 갑당 개비 수: 20
+2026-01-16T00:37:29.971+09:00  INFO 1381 --- [    Test worker] o.e.n.s.dashboard.DashboardService       : &gt;&gt;&gt; [INFO] 계산된 절약 금액: 22500
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.14.2</a> at 2026. 1. 16. 오전 12:37:30</p>
+</div>
+</div>
+</body>
+</html>
