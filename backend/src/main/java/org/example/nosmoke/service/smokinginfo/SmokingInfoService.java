@@ -33,16 +33,30 @@ public class SmokingInfoService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. id = " + userId));
 
-        SmokingInfo smokingInfo = new SmokingInfo(
-                userId,
-                requestDto.getCigaretteType(),
-                requestDto.getDailyConsumption(),
-                requestDto.getQuitStartTime(),
-                requestDto.getTargetDate(),
-                requestDto.getQuitGoal()
-        );
-
-        return smokingInfoRepository.save(smokingInfo);
+        // 기존 정보가 있는지 확인하여 분기 처리
+        return smokingInfoRepository.findByUserId(userId)
+                .map(existingInfo -> {
+                    // 이미 존재하면 -> 기존 객체 업데이트 (Dirty Checking)
+                    existingInfo.updateInfo(
+                            requestDto.getCigaretteType(),
+                            requestDto.getDailyConsumption(),
+                            requestDto.getTargetDate(),
+                            requestDto.getQuitGoal()
+                    );
+                    return existingInfo;
+                })
+                .orElseGet(() -> {
+                    // 없으면 -> 새로 생성하여 저장 (Insert)
+                    SmokingInfo newInfo = new SmokingInfo(
+                            userId,
+                            requestDto.getCigaretteType(),
+                            requestDto.getDailyConsumption(),
+                            requestDto.getQuitStartTime(),
+                            requestDto.getTargetDate(),
+                            requestDto.getQuitGoal()
+                    );
+                    return smokingInfoRepository.save(newInfo);
+                });
     }
 
     // 흡연 정보 업데이트

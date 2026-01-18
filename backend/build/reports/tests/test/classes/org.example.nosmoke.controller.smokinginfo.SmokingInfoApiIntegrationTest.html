@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - SmokingInfoApiIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>SmokingInfoApiIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/org.example.nosmoke.controller.smokinginfo.html">org.example.nosmoke.controller.smokinginfo</a> &gt; SmokingInfoApiIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.224s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+<li>
+<a href="#">Standard output</a>
+</li>
+<li>
+<a href="#">Standard error</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">흡연 정보 등록 API 테스트 - 성공</td>
+<td class="success">흡연정보_등록_성공()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">흡연 정보 수정 API 테스트 - 성공</td>
+<td class="success">흡연정보_수정_성공()</td>
+<td class="success">0.189s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">흡연 정보 조회 API 테스트 - 성공</td>
+<td class="success">흡연정보_조회_성공()</td>
+<td class="success">0.021s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>12:23:24.386 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [org.example.nosmoke.controller.smokinginfo.SmokingInfoApiIntegrationTest]: SmokingInfoApiIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:23:24.446 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration org.example.nosmoke.NoSmokeApplication for test class org.example.nosmoke.controller.smokinginfo.SmokingInfoApiIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.3)
+
+2026-01-18T12:23:24.617+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.e.n.c.s.SmokingInfoApiIntegrationTest  : Starting SmokingInfoApiIntegrationTest using Java 21.0.9 with PID 16351 (started by minseunghwan in /Users/minseunghwan/Desktop/nosmoke_git/NoSmoke/backend)
+2026-01-18T12:23:24.618+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.e.n.c.s.SmokingInfoApiIntegrationTest  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-01-18T12:23:25.264+09:00  INFO 16351 --- [NoSmoke] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-18T12:23:25.265+09:00  INFO 16351 --- [NoSmoke] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-18T12:23:25.332+09:00  INFO 16351 --- [NoSmoke] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 4 JPA repository interfaces.
+2026-01-18T12:23:26.242+09:00  INFO 16351 --- [NoSmoke] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-18T12:23:26.316+09:00  INFO 16351 --- [NoSmoke] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-18T12:23:26.317+09:00  INFO 16351 --- [NoSmoke] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-18T12:23:26.336+09:00  INFO 16351 --- [NoSmoke] [    Test worker] org.flywaydb.core.FlywayExecutor         : Database: jdbc:h2:mem:testdb (H2 2.3)
+2026-01-18T12:23:26.346+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; does not exist yet
+2026-01-18T12:23:26.347+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.core.internal.command.DbValidate     : Successfully validated 1 migration (execution time 00:00.004s)
+2026-01-18T12:23:26.349+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table &quot;PUBLIC&quot;.&quot;flyway_schema_history&quot; ...
+2026-01-18T12:23:26.362+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.core.internal.command.DbMigrate      : Current version of schema &quot;PUBLIC&quot;: &lt;&lt; Empty Schema &gt;&gt;
+2026-01-18T12:23:26.366+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.core.internal.command.DbMigrate      : Migrating schema &quot;PUBLIC&quot; to version &quot;1 - init&quot;
+2026-01-18T12:23:26.375+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.f.core.internal.command.DbMigrate      : Successfully applied 1 migration to schema &quot;PUBLIC&quot;, now at version v1 (execution time 00:00.005s)
+2026-01-18T12:23:26.418+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-18T12:23:26.450+09:00  INFO 16351 --- [NoSmoke] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2026-01-18T12:23:26.469+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-18T12:23:26.534+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-18T12:23:26.569+09:00  INFO 16351 --- [NoSmoke] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-18T12:23:26.951+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table if exists smoking_info 
+       add column quit_goal varchar(255)
+2026-01-18T12:23:26.970+09:00  INFO 16351 --- [NoSmoke] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-18T12:23:27.315+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-18T12:23:27.880+09:00  WARN 16351 --- [NoSmoke] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-18T12:23:28.067+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2026-01-18T12:23:28.089+09:00  INFO 16351 --- [NoSmoke] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name cutsomUserDetailsService
+2026-01-18T12:23:28.440+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-18T12:23:28.440+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-18T12:23:28.441+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-18T12:23:28.471+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-01-18T12:23:28.471+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@515a3e3a]]
+2026-01-18T12:23:28.471+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-01-18T12:23:28.472+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [localhost:5672]
+2026-01-18T12:23:28.476+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.s.a.r.l.SimpleMessageListenerContainer : Broker not available; cannot force queue declarations during start: java.net.ConnectException: Connection refused
+2026-01-18T12:23:28.481+09:00  INFO 16351 --- [NoSmoke] [rabbit-simple-0] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [localhost:5672]
+2026-01-18T12:23:28.482+09:00 ERROR 16351 --- [NoSmoke] [rabbit-simple-0] o.s.a.r.l.SimpleMessageListenerContainer : Failed to check/redeclare auto-delete queue(s).
+
+org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused
+	at org.springframework.amqp.rabbit.support.RabbitExceptionTranslator.convertRabbitAccessException(RabbitExceptionTranslator.java:61) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:632) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createConnection(CachingConnectionFactory.java:726) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.connection.ConnectionFactoryUtils.createConnection(ConnectionFactoryUtils.java:257) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.doExecute(RabbitTemplate.java:2262) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2235) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2215) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueInfo(RabbitAdmin.java:467) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueProperties(RabbitAdmin.java:451) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.attemptDeclarations(AbstractMessageListenerContainer.java:1972) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.redeclareElementsIfNecessary(AbstractMessageListenerContainer.java:1936) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.initialize(SimpleMessageListenerContainer.java:1481) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.run(SimpleMessageListenerContainer.java:1322) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at java.base/java.lang.VirtualThread.run(VirtualThread.java:329) ~[na:na]
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at com.rabbitmq.client.impl.SocketFrameHandlerFactory.create(SocketFrameHandlerFactory.java:61) ~[amqp-client-5.25.0.jar:5.25.0]
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1249) ~[amqp-client-5.25.0.jar:5.25.0]
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1198) ~[amqp-client-5.25.0.jar:5.25.0]
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connectAddresses(AbstractConnectionFactory.java:678) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connect(AbstractConnectionFactory.java:647) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:593) ~[spring-rabbit-3.2.5.jar:3.2.5]
+	... 12 common frames omitted
+
+2026-01-18T12:23:28.484+09:00  INFO 16351 --- [NoSmoke] [rabbit-simple-0] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [localhost:5672]
+2026-01-18T12:23:28.493+09:00  INFO 16351 --- [NoSmoke] [    Test worker] o.e.n.c.s.SmokingInfoApiIntegrationTest  : Started SmokingInfoApiIntegrationTest in 3.996 seconds (process running for 4.535)
+Hibernate: 
+    insert 
+    into
+        users
+        (created_at, email, modified_at, name, password, point, id) 
+    values
+        (?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        smoking_info
+        (cigarette_type, created_at, daily_consumption, modified_at, quit_goal, quit_start_date, target_date, user_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    select
+        si1_0.id,
+        si1_0.cigarette_type,
+        si1_0.created_at,
+        si1_0.daily_consumption,
+        si1_0.modified_at,
+        si1_0.quit_goal,
+        si1_0.quit_start_date,
+        si1_0.target_date,
+        si1_0.user_id 
+    from
+        smoking_info si1_0 
+    where
+        si1_0.user_id=?
+
+MockHttpServletRequest:
+      HTTP Method = PUT
+      Request URI = /api/smoking-info
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;143&quot;]
+             Body = {&quot;cigaretteType&quot;:&quot;바뀐 담배&quot;,&quot;dailyConsumption&quot;:15,&quot;quitStartTime&quot;:&quot;2026-01-18&quot;,&quot;targetDate&quot;:&quot;2026-08-06&quot;,&quot;quitGoal&quot;:&quot;목표도 수정됨&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = org.example.nosmoke.controller.smokinginfo.SmokingInfoController
+           Method = org.example.nosmoke.controller.smokinginfo.SmokingInfoController#updateSmokingInfo(SmokingInfoRequestDto)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;, X-Content-Type-Options:&quot;nosniff&quot;, X-XSS-Protection:&quot;0&quot;, Cache-Control:&quot;no-cache, no-store, max-age=0, must-revalidate&quot;, Pragma:&quot;no-cache&quot;, Expires:&quot;0&quot;, X-Frame-Options:&quot;DENY&quot;]
+     Content type = application/json
+             Body = {&quot;success&quot;:true,&quot;message&quot;:&quot;흡연 정보가 성공적으로 수정되었습니다.&quot;,&quot;data&quot;:null,&quot;errorCode&quot;:null}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+Hibernate: 
+    update
+        smoking_info 
+    set
+        cigarette_type=?,
+        daily_consumption=?,
+        modified_at=?,
+        quit_goal=?,
+        quit_start_date=?,
+        target_date=?,
+        user_id=? 
+    where
+        id=?
+Hibernate: 
+    select
+        si1_0.id,
+        si1_0.cigarette_type,
+        si1_0.created_at,
+        si1_0.daily_consumption,
+        si1_0.modified_at,
+        si1_0.quit_goal,
+        si1_0.quit_start_date,
+        si1_0.target_date,
+        si1_0.user_id 
+    from
+        smoking_info si1_0 
+    where
+        si1_0.user_id=?
+Hibernate: 
+    insert 
+    into
+        users
+        (created_at, email, modified_at, name, password, point, id) 
+    values
+        (?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    select
+        si1_0.id,
+        si1_0.cigarette_type,
+        si1_0.created_at,
+        si1_0.daily_consumption,
+        si1_0.modified_at,
+        si1_0.quit_goal,
+        si1_0.quit_start_date,
+        si1_0.target_date,
+        si1_0.user_id 
+    from
+        smoking_info si1_0 
+    where
+        si1_0.user_id=?
+Hibernate: 
+    insert 
+    into
+        smoking_info
+        (cigarette_type, created_at, daily_consumption, modified_at, quit_goal, quit_start_date, target_date, user_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/smoking-info
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;156&quot;]
+             Body = {&quot;cigaretteType&quot;:&quot;말보로 레드&quot;,&quot;dailyConsumption&quot;:20,&quot;quitStartTime&quot;:&quot;2026-01-18&quot;,&quot;targetDate&quot;:&quot;2026-04-28&quot;,&quot;quitGoal&quot;:&quot;건강을 위해 금연하자&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = org.example.nosmoke.controller.smokinginfo.SmokingInfoController
+           Method = org.example.nosmoke.controller.smokinginfo.SmokingInfoController#saveSmokingInfo(SmokingInfoRequestDto)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;, X-Content-Type-Options:&quot;nosniff&quot;, X-XSS-Protection:&quot;0&quot;, Cache-Control:&quot;no-cache, no-store, max-age=0, must-revalidate&quot;, Pragma:&quot;no-cache&quot;, Expires:&quot;0&quot;, X-Frame-Options:&quot;DENY&quot;]
+     Content type = application/json
+             Body = {&quot;success&quot;:true,&quot;message&quot;:&quot;흡연 정보가 등록되었습니다.&quot;,&quot;data&quot;:{&quot;id&quot;:2,&quot;userId&quot;:2,&quot;cigaretteType&quot;:&quot;말보로 레드&quot;,&quot;dailyConsumption&quot;:20,&quot;quitStartDate&quot;:&quot;2026-01-18&quot;,&quot;targetDate&quot;:&quot;2026-04-28&quot;,&quot;quitGoal&quot;:&quot;건강을 위해 금연하자&quot;,&quot;createdAt&quot;:&quot;2026-01-18T12:23:28.725435&quot;,&quot;modifiedAt&quot;:&quot;2026-01-18T12:23:28.725435&quot;,&quot;quitDays&quot;:0,&quot;moneySaved&quot;:0,&quot;cigarettesNotSmoked&quot;:0},&quot;errorCode&quot;:null}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+Hibernate: 
+    select
+        si1_0.id,
+        si1_0.cigarette_type,
+        si1_0.created_at,
+        si1_0.daily_consumption,
+        si1_0.modified_at,
+        si1_0.quit_goal,
+        si1_0.quit_start_date,
+        si1_0.target_date,
+        si1_0.user_id 
+    from
+        smoking_info si1_0 
+    where
+        si1_0.user_id=?
+Hibernate: 
+    insert 
+    into
+        users
+        (created_at, email, modified_at, name, password, point, id) 
+    values
+        (?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        smoking_info
+        (cigarette_type, created_at, daily_consumption, modified_at, quit_goal, quit_start_date, target_date, user_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    select
+        si1_0.id,
+        si1_0.cigarette_type,
+        si1_0.created_at,
+        si1_0.daily_consumption,
+        si1_0.modified_at,
+        si1_0.quit_goal,
+        si1_0.quit_start_date,
+        si1_0.target_date,
+        si1_0.user_id 
+    from
+        smoking_info si1_0 
+    where
+        si1_0.user_id=?
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /api/smoking-info
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = org.example.nosmoke.controller.smokinginfo.SmokingInfoController
+           Method = org.example.nosmoke.controller.smokinginfo.SmokingInfoController#getSmokingInfo()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;, X-Content-Type-Options:&quot;nosniff&quot;, X-XSS-Protection:&quot;0&quot;, Cache-Control:&quot;no-cache, no-store, max-age=0, must-revalidate&quot;, Pragma:&quot;no-cache&quot;, Expires:&quot;0&quot;, X-Frame-Options:&quot;DENY&quot;]
+     Content type = application/json
+             Body = {&quot;success&quot;:true,&quot;message&quot;:&quot;흡연 정보 조회 완료&quot;,&quot;data&quot;:{&quot;id&quot;:3,&quot;userId&quot;:3,&quot;cigaretteType&quot;:&quot;에쎄 체인지&quot;,&quot;dailyConsumption&quot;:10,&quot;quitStartDate&quot;:&quot;2023-01-01&quot;,&quot;targetDate&quot;:&quot;2023-12-31&quot;,&quot;quitGoal&quot;:&quot;조회 테스트 목표&quot;,&quot;createdAt&quot;:&quot;2026-01-18T12:23:28.735924&quot;,&quot;modifiedAt&quot;:&quot;2026-01-18T12:23:28.735924&quot;,&quot;quitDays&quot;:0,&quot;moneySaved&quot;:0,&quot;cigarettesNotSmoked&quot;:0},&quot;errorCode&quot;:null}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+</pre>
+</span>
+</div>
+<div class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/minseunghwan/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.6/17b32fd9f57deef02842f7f05abc4ad8127fe34e/byte-buddy-agent-1.17.6.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.14.2</a> at 2026. 1. 18. 오후 12:23:28</p>
+</div>
+</div>
+</body>
+</html>
